@@ -20,10 +20,11 @@ namespace EmployeeLeaveManagementApp.Gateway
            ([EmployeeName]
            ,[Email]
            ,[DesignationId]
-           ,[Password]
-           ,[UserTypeId])
+           ,[FatherName]
+           ,[MotherName]
+           ,[NationalIdNumber])
      VALUES
-           ('" + employee.EmployeeName + "','" + employee.Email + "','" + employee.DesignationId + "', '" + employee.Password + "','" + employee.UserTypeId + "' )";
+           ('" + employee.EmployeeName + "','" + employee.Email + "','" + employee.DesignationId + "', '" + employee.FatherName + "','" + employee.MotherName + "', '" + employee.NationalIdNumber + "'  )";
             SqlCommand command = new SqlCommand(query, con);
             con.Open();
             int rowAffected = command.ExecuteNonQuery();
@@ -32,10 +33,52 @@ namespace EmployeeLeaveManagementApp.Gateway
 
         }
 
+        public int SetEmployeeRoleAndPassword(EmployeePasswordAndRole employee)
+        {
+            string query = @"INSERT INTO [dbo].[tb_EmployeePasswordAndUserType]
+           ([EmployeeId]
+           ,[UserTypeId]
+           ,[Password])
+     VALUES
+           ('" + employee.EmployeeId + "','" + employee.UserTypeId + "','" + employee.Password + "')";
+            SqlCommand command = new SqlCommand(query, con);
+            con.Open();
+            int rowAffected = command.ExecuteNonQuery();
+            con.Close();
+            return rowAffected;
+
+        }
+
+        public List<Employee> GetEmployeeById(int id)
+        {
+
+            string query1 = @"Select s.Id, s.EmployeeName, s.Email, p.DesignationName
+from tb_Employee s
+inner join tb_Designation p on p.Id = s.DesignationId
+where s.Id = '" + id + "'";
+            SqlCommand com = new SqlCommand(query1, con);
+            con.Open();
+            SqlDataReader reader = com.ExecuteReader();
+            List<Employee> userInfo = new List<Employee>();
+            while (reader.Read())
+            {
+                Employee logins = new Employee();
+                logins.Id = (int)reader["Id"];
+                logins.EmployeeName = reader["EmployeeName"].ToString();
+                logins.Email = reader["Email"].ToString();
+                logins.FatherName = reader["DesignationName"].ToString();
+                userInfo.Add(logins);
+
+            }
+            reader.Close();
+            con.Close();
+            return userInfo;
+        }
+
         public List<Disignation> GetDesignationList()
         {
             string query = @"SELECT [Id]
-      ,[DisignationName]
+      ,[DesignationName]
   FROM [dbo].[tb_Designation]";
             SqlCommand command = new SqlCommand(query, con);
             con.Open();
@@ -45,7 +88,7 @@ namespace EmployeeLeaveManagementApp.Gateway
             {
                 Disignation disignation = new Disignation();
                 disignation.Id = (int)reader["Id"];
-                disignation.DisignationName = reader["DisignationName"].ToString();
+                disignation.DisignationName = reader["DesignationName"].ToString();
                 designationList.Add(disignation);
             }
             reader.Close();
@@ -76,8 +119,8 @@ namespace EmployeeLeaveManagementApp.Gateway
         public List<UserType> GetUserType()
         {
             string query = @"SELECT [Id]
-      ,[UserType]
-  FROM [dbo].[UserType]";
+      ,[UserTypeName]
+  FROM [dbo].[tb_UserType]";
             SqlCommand command = new SqlCommand(query, con);
             con.Open();
             SqlDataReader reader = command.ExecuteReader();
@@ -86,7 +129,7 @@ namespace EmployeeLeaveManagementApp.Gateway
             {
                 UserType userType = new UserType();
                 userType.Id = (int)reader["Id"];
-                userType.UserTypeName = reader["UserType"].ToString();
+                userType.UserTypeName = reader["UserTypeName"].ToString();
                 userTypes.Add(userType);
             }
             reader.Close();
@@ -257,7 +300,7 @@ where tb_EmployeeLeave.Id = '" + id + "'";
             {
                 isExists = true;
             }
-            
+
             Reader.Close();
             con.Close();
             return isExists;
@@ -395,24 +438,20 @@ WHERE EmployeeId ='" + employeeId + "' and LeaveTypeId = '" + 2 + "' and Status 
             return totalLeave.ToList();
         }
 
-        public List<Employee> GetUserRole(int id)
+        public List<LoginInfo> GetUserRole(int id)
         {
 
-            string query1 = @"SELECT [Id]
-      ,[EmployeeName]
-      ,[Email]
-      ,[DesignationId]
-      ,[Password]
-      ,[UserTypeId]
-  FROM [dbo].[tb_Employee]
-  where Id = '" + id + "'";
+            string query1 = @"Select s.Id, s.EmployeeName, s.Email, s.DesignationId, p.UserTypeId, p.Password
+from tb_Employee s
+inner join tb_EmployeePasswordAndUserType p on p.EmployeeId = s.Id
+  where s.Id = '" + id + "'";
             SqlCommand com = new SqlCommand(query1, con);
             con.Open();
             SqlDataReader reader = com.ExecuteReader();
-            List<Employee> userInfo = new List<Employee>();
+            List<LoginInfo> userInfo = new List<LoginInfo>();
             while (reader.Read())
             {
-                Employee logins = new Employee();
+                LoginInfo logins = new LoginInfo();
                 logins.Id = (int)reader["Id"];
                 logins.EmployeeName = reader["EmployeeName"].ToString();
                 logins.Email = reader["Email"].ToString();

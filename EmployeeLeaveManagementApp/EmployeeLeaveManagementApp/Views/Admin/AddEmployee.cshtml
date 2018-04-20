@@ -1,4 +1,5 @@
-﻿@model EmployeeLeaveManagementApp.Models.Employee
+﻿@using System.Web.UI.WebControls
+@model EmployeeLeaveManagementApp.Models.Employee
 @{
     ViewBag.Title = "AddEmployee";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -11,7 +12,7 @@
             <div class="fBody">
                 <h3 style="text-align: center">New Employee Entry</h3>
 
-                @using (Html.BeginForm())
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "EmployeeEntryValidation", id = "EmployeeEntryValidation" }))
                 {
                     @Html.AntiForgeryToken()
 
@@ -20,29 +21,26 @@
                         <hr />
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="form-group">
-                            @*@Html.LabelFor(model => model.EmployeeName, htmlAttributes: new { @class = "control-label col-md-2" })*@
                             <div class="col-md-12">
                                 <label id="ShowEmployeeName" class="control-label"></label>
-                                @Html.EditorFor(model => model.EmployeeName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.EmployeeName, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "Employee Name" } })
                                 @Html.ValidationMessageFor(model => model.EmployeeName, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group">
-                            @*@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })*@
                             <div class="col-md-12">
                                 <label id="ShowEmail" class="control-label"></label>
-                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "Email" } })
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group">
-                            @*@Html.LabelFor(model => model.DesignationId, htmlAttributes: new { @class = "control-label col-md-2" })*@
                             <div class="col-md-12">
                                 <label id="ShowDesignationId" class="control-label"></label>
                                 <select name="DesignationId" id="DesignationId" class="form-control">
-                                    <option value="">--Select--</option>
+                                    <option value="">--Select Your Designation--</option>
                                     @foreach (var designations in ViewBag.designations)
                                     {
                                         <option value="@designations.Id">@designations.DisignationName</option>
@@ -53,35 +51,27 @@
                         </div>
 
                         <div class="form-group">
-                            @*@Html.LabelFor(model => model.UserTypeId, htmlAttributes: new { @class = "control-label col-md-2" })*@
                             <div class="col-md-12">
-                                <label id="ShowUserTypeId" class="control-label"></label>
-                                <select name="UserTypeId" id="UserTypeId" class="form-control">
-                                    <option value="">--Select--</option>
-                                    @foreach (var leaveTypes in ViewBag.userType)
-                                    {
-                                        <option value="@leaveTypes.Id">@leaveTypes.UserTypeName</option>
-                                    }
-                                </select>
-                                @Html.ValidationMessageFor(model => model.UserTypeId, "", new { @class = "text-danger" })
+                                <label id="ShowFatherName" class="control-label"></label>
+                                @Html.EditorFor(model => model.FatherName, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "Tather's Name" } })
+                                @Html.ValidationMessageFor(model => model.FatherName, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
                         <div class="form-group">
-                            @*@Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })*@
+
                             <div class="col-md-12">
-                                <label id="ShowPassword" class="control-label"></label>
-                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                <label id="ShowMotherName" class="control-label"></label>
+                                @Html.EditorFor(model => model.MotherName, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "Mother's Name" } })
+                                @Html.ValidationMessageFor(model => model.MotherName, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group">
                             @*@Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })*@
                             <div class="col-md-12">
-                                <label id="ShowConfirmPassword" class="control-label"></label>
-                                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                                <label id="ShowNationalIdNumber" class="control-label"></label>
+                                @Html.EditorFor(model => model.NationalIdNumber, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "National Id Number" } })
+                                @Html.ValidationMessageFor(model => model.NationalIdNumber, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
@@ -90,7 +80,7 @@
                                 <input type="submit" value="Save" class="btn btn-default" />
                             </div>
                         </div>
-                        <h2 style="text-align: center">@ViewBag.ShowMsg</h2>
+                        <h3 style="text-align: center">@ViewBag.ShowMsg</h3>
                     </div>
                 }
 
@@ -100,33 +90,50 @@
     </div>
 </div>
 
-    @*<div>
-            @Html.ActionLink("Back to List", "Index")
-        </div>*@
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 
-        <script>
-            $(document).ready(function () {
-                $("#EmployeeName").click(function () {
-                    $("#ShowEmployeeName").text("Employee Name");
-                });
-                $("#Email").click(function () {
-                    $("#ShowEmail").text("Email");
-                });
-                $("#DesignationId").click(function () {
-                    $("#ShowDesignationId").text("Designation");
-                });
-                $("#UserTypeId").click(function () {
-                    $("#ShowUserTypeId").text("User Type");
-                });
-                $("#Password").click(function () {
-                    $("#ShowPassword").text("Password");
-                });
-                $("#ConfirmPassword").click(function () {
-                    $("#ShowConfirmPassword").text("Confirm Password");
-                });
+    <script>
+        $(document).ready(function () {
+            $("#EmployeeName").click(function () {
+                $("#ShowEmployeeName").text("Employee Name");
             });
-        </script>
-    }
+            $("#Email").click(function () {
+                $("#ShowEmail").text("Email");
+            });
+            $("#DesignationId").click(function () {
+                $("#ShowDesignationId").text("Designation");
+            });
+            $("#FatherName").click(function () {
+                $("#ShowFatherName").text("Father's Name");
+            });
+            $("#MotherName").click(function () {
+                $("#ShowMotherName").text("Mother's Name");
+            });
+            $("#NationalIdNumber").click(function () {
+                $("#ShowNationalIdNumber").text("National Id Number(Optional)");
+            });
+        });
+
+        $("#EmployeeEntryValidation").validate({
+            rules: {
+                EmployeeName: "required",
+                Email: "required",
+                DesignationId: "required",
+                FatherName: "required",
+                MotherName: "required",
+            },
+            messages: {
+                EmployeeName: "Enter Employee Name!",
+                Email: "Enter Employee Email!",
+                DesignationId: "Please Select Designation!",
+                FatherName: "Enter Employee's Father Name!",
+                MotherName: "Enter Employee's Mother Name!",
+            }
+        });
+    </script>
+}

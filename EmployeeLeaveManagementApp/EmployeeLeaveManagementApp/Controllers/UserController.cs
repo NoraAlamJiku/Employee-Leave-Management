@@ -34,7 +34,7 @@ namespace EmployeeLeaveManagementApp.Controllers
             }
 
             int employeeId = (int)Session["user"];
-            List<Employee> userRole = adminManager.GetUserRole(employeeId);
+            List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
             if (userRole[0].UserTypeId == 2)
             {
                 ViewBag.designations = adminManager.GetDesignationList();
@@ -59,7 +59,7 @@ namespace EmployeeLeaveManagementApp.Controllers
             }
 
             int employeeId1 = (int)Session["user"];
-            List<Employee> userRole = adminManager.GetUserRole(employeeId1);
+            List<LoginInfo> userRole = adminManager.GetUserRole(employeeId1);
             if (userRole[0].UserTypeId == 2)
             {
                 int employeeId = (int)Session["user"];

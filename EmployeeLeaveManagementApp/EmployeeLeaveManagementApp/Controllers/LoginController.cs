@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using EmployeeLeaveManagementApp.Manager;
 using EmployeeLeaveManagementApp.Models;
+using EmployeeLeaveManagementApp.ViewModel;
 
 namespace EmployeeLeaveManagementApp.Controllers
 {
@@ -24,11 +25,11 @@ namespace EmployeeLeaveManagementApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(Employee employee)
+        public ActionResult Login(LoginInfo employee)
         {
                 try
                 {
-                    List<Employee> status = loginManager.GetLogin(employee);
+                    List<LoginInfo> status = loginManager.GetLogin(employee);
                     if (status.Count != 0)
                     {
                         if (status.Count() > 0)

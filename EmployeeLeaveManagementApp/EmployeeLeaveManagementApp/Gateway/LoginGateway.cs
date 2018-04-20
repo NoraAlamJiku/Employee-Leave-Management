@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using EmployeeLeaveManagementApp.Models;
+using EmployeeLeaveManagementApp.ViewModel;
 
 namespace EmployeeLeaveManagementApp.Gateway
 {
@@ -13,7 +14,7 @@ namespace EmployeeLeaveManagementApp.Gateway
         private SqlConnection con = new SqlConnection(
     WebConfigurationManager.ConnectionStrings["LeaveManagementDb"].ConnectionString);
 
-        public List<Employee> GetLogin(Employee employee)
+        public List<LoginInfo> GetLogin(LoginInfo employee)
         {
 
             string query1 = @"SELECT [Id]
@@ -27,10 +28,10 @@ namespace EmployeeLeaveManagementApp.Gateway
             SqlCommand com = new SqlCommand(query1, con);
             con.Open();
             SqlDataReader reader = com.ExecuteReader();
-            List<Employee> userInfo = new List<Employee>();
+            List<LoginInfo> userInfo = new List<LoginInfo>();
             while (reader.Read())
             {
-                Employee logins = new Employee();
+                LoginInfo logins = new LoginInfo();
                 logins.Id = (int)reader["Id"];
                 logins.EmployeeName = reader["EmployeeName"].ToString();
                 logins.Email = reader["Email"].ToString();

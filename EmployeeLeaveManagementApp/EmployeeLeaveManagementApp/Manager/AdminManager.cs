@@ -18,6 +18,16 @@ namespace EmployeeLeaveManagementApp.Manager
             return rowAffected;
 
         }
+
+        public int SetEmployeeRoleAndPassword(EmployeePasswordAndRole employee)
+        {
+            return adminGateway.SetEmployeeRoleAndPassword(employee);
+        }
+
+        public List<Employee> GetEmployeeById(int id)
+        {
+            return adminGateway.GetEmployeeById(id);
+        }
         public List<UserType> GetUserType()
         {
             return adminGateway.GetUserType();
@@ -144,13 +154,11 @@ namespace EmployeeLeaveManagementApp.Manager
             {
                 totalSickLeave = 0;
             }
-            //var totalSickLeaves = adminGateway.TotalCasualLeave(employeeId);
 
-            //var totalSickLeave = totalSickLeaves.FirstOrDefault().NumberOfLeave;
             return totalSickLeave;
         }
 
-        public List<Employee> GetUserRole(int id)
+        public List<LoginInfo> GetUserRole(int id)
         {
             return adminGateway.GetUserRole(id);
         }

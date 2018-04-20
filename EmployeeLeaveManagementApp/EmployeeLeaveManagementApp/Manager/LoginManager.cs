@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using EmployeeLeaveManagementApp.Gateway;
 using EmployeeLeaveManagementApp.Models;
+using EmployeeLeaveManagementApp.ViewModel;
 
 namespace EmployeeLeaveManagementApp.Manager
 {
@@ -11,7 +12,7 @@ namespace EmployeeLeaveManagementApp.Manager
     {
         private LoginGateway loginGateway = new LoginGateway();
 
-        public List<Employee> GetLogin(Employee login)
+        public List<LoginInfo> GetLogin(LoginInfo login)
         {
             return loginGateway.GetLogin(login);
         }
