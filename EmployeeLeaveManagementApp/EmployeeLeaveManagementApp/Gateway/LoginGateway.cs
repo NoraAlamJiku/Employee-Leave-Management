@@ -17,13 +17,9 @@ namespace EmployeeLeaveManagementApp.Gateway
         public List<LoginInfo> GetLogin(LoginInfo employee)
         {
 
-            string query1 = @"SELECT [Id]
-      ,[EmployeeName]
-      ,[Email]
-      ,[DesignationId]
-      ,[Password]
-      ,[UserTypeId]
-  FROM [dbo].[tb_Employee]
+            string query1 = @"SELECT s.Email, s.EmployeeName, s.Id, p.Password, p.UserTypeId
+  FROM tb_Employee s
+  inner join tb_EmployeePasswordAndUserType p on p.EmployeeId= s.Id
   where Email = '" + employee.Email + "' and Password = '" + employee.Password + "'";
             SqlCommand com = new SqlCommand(query1, con);
             con.Open();
