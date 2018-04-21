@@ -12,9 +12,18 @@ namespace EmployeeLeaveManagementApp.Manager
     {
         private LoginGateway loginGateway = new LoginGateway();
 
-        public List<LoginInfo> GetLogin(LoginInfo login)
+        public List<LoginInfo> SupAdminAdminLogin(LoginInfo login)
         {
-            return loginGateway.GetLogin(login);
+            return loginGateway.SupAdminAdminLogin(login);
+        }
+        public List<LoginInfo> AdminLogin(LoginInfo login)
+        {
+            return loginGateway.AdminLogin(login);
+        }
+
+        public List<LoginInfo> UserLogin(LoginInfo login)
+        {
+            return loginGateway.UserLogin(login);
         }
     }
 }
