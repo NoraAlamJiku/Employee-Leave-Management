@@ -35,7 +35,7 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 2)
+            if (userRole[0].UserTypeId == 3)
             {
                 ViewBag.designations = adminManager.GetDesignationList();
                 leave = (int)Session["user"];
@@ -60,7 +60,7 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             int employeeId1 = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId1);
-            if (userRole[0].UserTypeId == 2)
+            if (userRole[0].UserTypeId == 3)
             {
                 int employeeId = (int)Session["user"];
                 ViewBag.casualLeaveLeft = adminManager.CasualLeaveLeft(employeeId);

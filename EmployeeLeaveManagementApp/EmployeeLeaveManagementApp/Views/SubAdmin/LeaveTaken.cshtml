@@ -1,0 +1,155 @@
+﻿@model EmployeeLeaveManagementApp.Models.EmployeeLeaveTaken
+@{
+    ViewBag.Title = "LeaveTaken";
+    Layout = "~/Views/Shared/_LayoutSubAdmin.cshtml";
+}
+
+<div class="control-label">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="fBody">
+                <h2 style="text-align: center">Application for leave</h2>
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "leaveTakenValidasion", id = "leaveTakenValidasion" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h3 style="text-align: center"> @ViewBag.ShowMsg </h3>
+                    <hr />
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        @*<div class="form-group">
+                                <div class="col-md-12">
+                                    <label id="showEmployeeId" class="control-label"></label>
+                                    <select name="EmployeeId" id="EmployeeId" class="form-control">
+                                        <option value="">--Select Employee Id--</option>
+                                        @foreach (var employee in ViewBag.ListOfEmployees)
+                                        {
+                                            <option value="@employee.Id">@employee.EmployeeName</option>
+                                        }
+                                    </select>
+                                    @Html.ValidationMessageFor(model => model.LeaveTypeId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label id="showLeaveTypeId" class="control-label"></label>
+                                <select name="LeaveTypeId" id="LeaveTypeId" class="form-control">
+                                    <option value="">--Select Leave Type--</option>
+                                    @foreach (var employee in ViewBag.ListOfLeaveType)
+                                    {
+                                        <option value="@employee.Id">@employee.LeaveTypeName</option>
+                                    }
+                                </select>
+                                @Html.ValidationMessageFor(model => model.LeaveTypeId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label id="showReason" class="control-label"></label>
+                                <input type="text" id="Reason" name="Reason" class="form-control" placeholder="Leave Purpose/Reason" />
+                                @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label id="showStartDate" class="control-label"></label>
+                                <input type="date" id="StartDate" name="StartDate" class="form-control" placeholder="Please Select Start Date" />
+                                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label id="showEndDate" class="control-label"></label>
+                                <input type="date" id="EndDate" name="EndDate" class="form-control" placeholder="Please Select End Date" />
+                                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label id="showTotalDay" class="control-label"></label>
+                                <input type="text" id="TotalDay" name="TotalDay" class="form-control" placeholder="Total Day's'" />
+                                @Html.ValidationMessageFor(model => model.TotalDay, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="submit" value="Submit" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-3">
+            <h3> Sick Leave :   @ViewBag.sickLeaveLeft / @ViewBag.totalSickLeave </h3>
+            <h3> Casual Leave :   @ViewBag.casualLeaveLeft / @ViewBag.totalCasualkLeave </h3>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+        $(document).ready(function () {
+            $("#EmployeeId").click(function () {
+                $("#showEmployeeId").text("Employee Name");
+            });
+            $("#LeaveTypeId").click(function () {
+                $("#showLeaveTypeId").text("Leave Type");
+            });
+            $("#Reason").click(function () {
+                $("#showReason").text("Reason");
+            });
+            $("#StartDate").click(function () {
+                $("#showStartDate").text("Start Date");
+            });
+            $("#EndDate").click(function () {
+                $("#showEndDate").text("End Date");
+                $("#showTotalDay").text("Total Day's");
+            });
+        });
+
+        $("#EndDate").on('change', function () {
+            $("#TotalDay").val("");
+            var startTime = new Date($("#StartDate").val());
+            var endtime = new Date($("#EndDate").val());
+            var duration = endtime - startTime;
+            var days = Math.floor(((duration % 31536000000) % 2628000000) / 86400000);
+            if (days > 0)
+                $("#TotalDay").val(days + 1);
+            else if (days == 0)
+                $("#TotalDay").val(1);
+            else
+                $("#TotalDay").val("");
+        });
+
+        $("#leaveTakenValidasion").validate({
+            rules: {
+
+                EmployeeId: "required",
+                LeaveTypeId: "required",
+                Reason: "required",
+                StartDate: "required",
+                EndDate: "required",
+                TotalDay: "required",
+
+            },
+            messages: {
+
+                EmployeeId: "Please Select Employee!",
+                LeaveTypeId: "Please Select Leave Type!",
+            }
+        });
+
+    </script>
+}
