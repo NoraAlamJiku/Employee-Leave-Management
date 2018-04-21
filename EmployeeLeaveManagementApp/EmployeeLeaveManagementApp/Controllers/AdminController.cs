@@ -152,7 +152,7 @@ namespace EmployeeLeaveManagementApp.Controllers
             if (userRole[0].UserTypeId == 1)
             {
                 ViewBag.leavetype = adminManager.GetLeaveTypes();
-                ViewBag.ListOfEmployees = adminManager.ListOfEmployee();
+                ViewBag.designations = adminManager.GetDesignationList();
                 return View();
             }
             else
@@ -177,7 +177,7 @@ namespace EmployeeLeaveManagementApp.Controllers
                         int message = adminManager.AllocationLeave(allocation);
                         if (message > 0)
                         {
-                            ViewBag.ShowMsg = "Employee Leave Allocation Saved Successfully!";
+                            ViewBag.ShowMsg = "Leave Allocation Saved Successfully!";
                         }
                         else
                         {
@@ -192,7 +192,7 @@ namespace EmployeeLeaveManagementApp.Controllers
             }
 
             ViewBag.leavetype = adminManager.GetLeaveTypes();
-            ViewBag.ListOfEmployees = adminManager.ListOfEmployee();
+            ViewBag.designations = adminManager.GetDesignationList();
 
             return View();
         }

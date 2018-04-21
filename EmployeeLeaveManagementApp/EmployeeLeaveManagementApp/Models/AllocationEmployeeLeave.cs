@@ -10,7 +10,7 @@ namespace EmployeeLeaveManagementApp.Models
     {
         public int Id { get; set; }
         [Required]
-        public int EmployeeId { get; set; }
+        public int DesignationId { get; set; }
         [Required]
         public int LeaveTypeId { get; set; }
         [Required]

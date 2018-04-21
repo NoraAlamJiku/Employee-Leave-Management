@@ -15,10 +15,10 @@ namespace EmployeeLeaveManagementApp.Gateway
     WebConfigurationManager.ConnectionStrings["LeaveManagementDb"].ConnectionString);
         public List<EmployeeLeaveInfo> OneEmployeeLeaveTakens(int? leave)
         {
-            string query = @"SELECT tb_EmployeeLeave.Id, CONVERT(NVARCHAR,tb_EmployeeLeave.StartDate, 100) AS[StartDate],CONVERT(NVARCHAR,tb_EmployeeLeave.EndDate, 100) AS[EndDate],tb_EmployeeLeave.TotalDay, tb_EmployeeLeave.Status,CONVERT(NVARCHAR,tb_EmployeeLeave.EntryDate, 100) AS[EntryDate], tb_Employee.EmployeeName,tb_Employee.Email,tb_LeaveType.LeaveType
-FROM tb_EmployeeLeave
-INNER JOIN tb_Employee ON tb_EmployeeLeave.EmployeeId = tb_Employee.Id
-INNER JOIN tb_LeaveType ON tb_EmployeeLeave.LeaveTypeId = tb_LeaveType.Id Where tb_EmployeeLeave.EmployeeId = '" + leave + "'";
+            string query = @"SELECT e.Id, CONVERT(NVARCHAR,e.StartDate, 100) AS[StartDate],CONVERT(NVARCHAR,e.EndDate, 100) AS[EndDate],e.TotalDay, e.Status,CONVERT(NVARCHAR,e.EntryDate, 100) AS[EntryDate], a.EmployeeName,a.Email,p.LeaveTypeName
+FROM tb_EmployeeLeave e
+INNER JOIN tb_Employee a ON e.EmployeeId = a.Id
+INNER JOIN tb_LeaveType p ON e.LeaveTypeId = p.Id Where e.EmployeeId = '" + leave + "'";
             SqlCommand command = new SqlCommand(query, con);
             con.Open();
             SqlDataReader reader = command.ExecuteReader();
@@ -31,7 +31,7 @@ INNER JOIN tb_LeaveType ON tb_EmployeeLeave.LeaveTypeId = tb_LeaveType.Id Where 
                 employeeLeave.Id = serial;
                 employeeLeave.EmployeeName = reader["EmployeeName"].ToString();
                 employeeLeave.Email = reader["Email"].ToString();
-                employeeLeave.LeaveTypeName = reader["LeaveType"].ToString();
+                employeeLeave.LeaveTypeName = reader["LeaveTypeName"].ToString();
                 employeeLeave.TotalDay = (int)reader["TotalDay"];
                 employeeLeave.StartDate = reader["StartDate"].ToString();
                 employeeLeave.EndDate = reader["EndDate"].ToString();
