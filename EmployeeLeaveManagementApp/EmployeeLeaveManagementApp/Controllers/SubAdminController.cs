@@ -9,23 +9,17 @@ using EmployeeLeaveManagementApp.ViewModel;
 
 namespace EmployeeLeaveManagementApp.Controllers
 {
-    public class UserController : Controller
+    public class SubAdminController : Controller
     {
-        private UserManager userManager = new UserManager();
         private AdminManager adminManager = new AdminManager();
-        // GET: User
+        private UserManager userManager = new UserManager();
+        // GET: SubAdmin
+
         public ActionResult Index()
         {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("Login", "Login");
-                ;
-            }
-
             return View();
         }
-
-        public ActionResult OneEmployeeLeaveTakens(int? leave)
+        public ActionResult AddEmployee()
         {
             if (Session["user"] == null)
             {
@@ -35,12 +29,11 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 3)
+            if (userRole[0].UserTypeId == 2)
             {
                 ViewBag.designations = adminManager.GetDesignationList();
-                leave = (int)Session["user"];
-                List<EmployeeLeaveInfo> GetAllLeaveApplication = userManager.OneEmployeeLeaveTakens(leave);
-                return View(GetAllLeaveApplication);
+                ViewBag.userType = adminManager.GetUserType();
+                return View();
             }
             else
             {
@@ -49,6 +42,33 @@ namespace EmployeeLeaveManagementApp.Controllers
 
 
         }
+        [HttpPost]
+        public ActionResult AddEmployee(Employee employee)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    int message = adminManager.AddEmployee(employee);
+                    if (message > 0)
+                    {
+                        ViewBag.ShowMsg = "Employee Saved Successfully!";
+                    }
+                    else
+                    {
+                        ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
+                    }
+                }
+                catch (Exception)
+                {
+                    ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
+                }
+            }
+            ViewBag.designations = adminManager.GetDesignationList();
+            ViewBag.userType = adminManager.GetUserType();
+            return View();
+        }
+
 
         public ActionResult LeaveTaken()
         {
@@ -60,7 +80,7 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             int employeeId1 = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId1);
-            if (userRole[0].UserTypeId == 3)
+            if (userRole[0].UserTypeId == 2)
             {
                 int employeeId = (int)Session["user"];
                 ViewBag.casualLeaveLeft = adminManager.CasualLeaveLeft(employeeId);
@@ -81,11 +101,6 @@ namespace EmployeeLeaveManagementApp.Controllers
         [HttpPost]
         public ActionResult LeaveTaken(EmployeeLeaveTaken leaveTaken)
         {
-
-            leaveTaken.EmployeeId = (int)Session["user"];
-            leaveTaken.Status = "Submit";
-            leaveTaken.EntryDate = DateTime.Now;
-
             if (ModelState.IsValid)
             {
                 try
@@ -97,6 +112,9 @@ namespace EmployeeLeaveManagementApp.Controllers
                     }
                     else
                     {
+
+                        leaveTaken.Status = "Submit";
+                        leaveTaken.EntryDate = DateTime.Now;
                         int message = userManager.LeaveApplication(leaveTaken);
                         if (message > 0)
                         {
@@ -107,7 +125,6 @@ namespace EmployeeLeaveManagementApp.Controllers
                             ViewBag.ShowMsg = "Opps! Application Not Saved! Try Again Please";
                         }
                     }
- 
                 }
                 catch (Exception)
                 {
@@ -124,6 +141,32 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             return View();
         }
+
+        public ActionResult OneEmployeeLeaveTakens(int? leave)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("Login", "Login");
+                ;
+            }
+
+            int employeeId = (int)Session["user"];
+            List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
+            if (userRole[0].UserTypeId == 2)
+            {
+                ViewBag.designations = adminManager.GetDesignationList();
+                leave = (int)Session["user"];
+                List<EmployeeLeaveInfo> GetAllLeaveApplication = userManager.OneEmployeeLeaveTakens(leave);
+                return View(GetAllLeaveApplication);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
+
+        }
+
 
     }
 }

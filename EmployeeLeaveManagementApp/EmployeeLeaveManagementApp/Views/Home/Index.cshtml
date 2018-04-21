@@ -1,28 +1,33 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
-<div class="jumbotron">
-    <h2 style="text-align: center"> Employee Leave Management System </h2> 
-</div>
-
-
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            @Html.ActionLink("Nerd Castal Ltd.", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="login">
+                    <div class="form-horizontal">
+                        <h4 style="text-align: center">Login in page</h4>
+                        <hr />
+                        <div class="form-group">                     
+                            <div class="col-md-12">
+                                @Html.ActionLink("SupAdmin", "SubAdmin", "Login")
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                              @Html.ActionLink("Admin", "Admin", "Login")
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                              @Html.ActionLink("User", "User", "Login")
+                            </div>
+                        </div>
+                    </div>                
+            </div>
         </div>
-        <div class="navbar-collapse collapse">
-
-            <ul class="nav navbar-nav navbar-right">
-                <li>@Html.ActionLink("Log In", "Login", "Login")</li>
-            </ul>
-        </div>
+        <div class="col-md-2"></div>
     </div>
 </div>

@@ -20,10 +20,11 @@ namespace EmployeeLeaveManagementApp.Gateway
            ([EmployeeName]
            ,[Email]
            ,[DesignationId]
-           ,[Password]
-           ,[UserTypeId])
+           ,[FatherName]
+           ,[MotherName]
+           ,[NationalIdNumber])
      VALUES
-           ('" + employee.EmployeeName + "','" + employee.Email + "','" + employee.DesignationId + "', '" + employee.Password + "','" + employee.UserTypeId + "' )";
+           ('" + employee.EmployeeName + "','" + employee.Email + "','" + employee.DesignationId + "', '" + employee.FatherName + "','" + employee.MotherName + "', '" + employee.NationalIdNumber + "'  )";
             SqlCommand command = new SqlCommand(query, con);
             con.Open();
             int rowAffected = command.ExecuteNonQuery();
@@ -32,10 +33,52 @@ namespace EmployeeLeaveManagementApp.Gateway
 
         }
 
+        public int SetEmployeeRoleAndPassword(EmployeePasswordAndRole employee)
+        {
+            string query = @"INSERT INTO [dbo].[tb_EmployeePasswordAndUserType]
+           ([EmployeeId]
+           ,[UserTypeId]
+           ,[Password])
+     VALUES
+           ('" + employee.EmployeeId + "','" + employee.UserTypeId + "','" + employee.Password + "')";
+            SqlCommand command = new SqlCommand(query, con);
+            con.Open();
+            int rowAffected = command.ExecuteNonQuery();
+            con.Close();
+            return rowAffected;
+
+        }
+
+        public List<Employee> GetEmployeeById(int id)
+        {
+
+            string query1 = @"Select s.Id, s.EmployeeName, s.Email, p.DesignationName
+from tb_Employee s
+inner join tb_Designation p on p.Id = s.DesignationId
+where s.Id = '" + id + "'";
+            SqlCommand com = new SqlCommand(query1, con);
+            con.Open();
+            SqlDataReader reader = com.ExecuteReader();
+            List<Employee> userInfo = new List<Employee>();
+            while (reader.Read())
+            {
+                Employee logins = new Employee();
+                logins.Id = (int)reader["Id"];
+                logins.EmployeeName = reader["EmployeeName"].ToString();
+                logins.Email = reader["Email"].ToString();
+                logins.FatherName = reader["DesignationName"].ToString();
+                userInfo.Add(logins);
+
+            }
+            reader.Close();
+            con.Close();
+            return userInfo;
+        }
+
         public List<Disignation> GetDesignationList()
         {
             string query = @"SELECT [Id]
-      ,[DisignationName]
+      ,[DesignationName]
   FROM [dbo].[tb_Designation]";
             SqlCommand command = new SqlCommand(query, con);
             con.Open();
@@ -45,7 +88,7 @@ namespace EmployeeLeaveManagementApp.Gateway
             {
                 Disignation disignation = new Disignation();
                 disignation.Id = (int)reader["Id"];
-                disignation.DisignationName = reader["DisignationName"].ToString();
+                disignation.DisignationName = reader["DesignationName"].ToString();
                 designationList.Add(disignation);
             }
             reader.Close();
@@ -56,7 +99,7 @@ namespace EmployeeLeaveManagementApp.Gateway
         public List<LeaveType> GetLeaveTypes()
         {
             string query = @"SELECT [Id]
-      ,[LeaveType]
+      ,[LeaveTypeName]
   FROM [dbo].[tb_LeaveType]";
             SqlCommand command = new SqlCommand(query, con);
             con.Open();
@@ -66,7 +109,7 @@ namespace EmployeeLeaveManagementApp.Gateway
             {
                 LeaveType liveType = new LeaveType();
                 liveType.Id = (int)reader["Id"];
-                liveType.LeaveTypeName = reader["LeaveType"].ToString();
+                liveType.LeaveTypeName = reader["LeaveTypeName"].ToString();
                 leaveTypes.Add(liveType);
             }
             reader.Close();
@@ -76,8 +119,8 @@ namespace EmployeeLeaveManagementApp.Gateway
         public List<UserType> GetUserType()
         {
             string query = @"SELECT [Id]
-      ,[UserType]
-  FROM [dbo].[UserType]";
+      ,[UserTypeName]
+  FROM [dbo].[tb_UserType]";
             SqlCommand command = new SqlCommand(query, con);
             con.Open();
             SqlDataReader reader = command.ExecuteReader();
@@ -86,7 +129,7 @@ namespace EmployeeLeaveManagementApp.Gateway
             {
                 UserType userType = new UserType();
                 userType.Id = (int)reader["Id"];
-                userType.UserTypeName = reader["UserType"].ToString();
+                userType.UserTypeName = reader["UserTypeName"].ToString();
                 userTypes.Add(userType);
             }
             reader.Close();
@@ -97,11 +140,11 @@ namespace EmployeeLeaveManagementApp.Gateway
         public int AllocationLeave(AllocationEmployeeLeave leave)
         {
             string query = @"INSERT INTO [dbo].[tb_AllocationLeave]
-           ([EmployeeId]
+           ([DesignationId]
            ,[LeaveTypeId]
            ,[NumberOfLeave])
      VALUES
-           ('" + leave.EmployeeId + "', '" + leave.LeaveTypeId + "', '" + leave.NumberOfLeave + "')";
+           ('" + leave.DesignationId + "', '" + leave.LeaveTypeId + "', '" + leave.NumberOfLeave + "')";
             SqlCommand command = new SqlCommand(query, con);
             con.Open();
             int rowAffected = command.ExecuteNonQuery();
@@ -133,10 +176,10 @@ namespace EmployeeLeaveManagementApp.Gateway
 
         public List<EmployeeLeaveInfo> GetEmployeeLeaveApplication()
         {
-            string query = @"SELECT tb_EmployeeLeave.Id, CONVERT(NVARCHAR,tb_EmployeeLeave.StartDate, 100) AS[StartDate],CONVERT(NVARCHAR,tb_EmployeeLeave.EndDate, 100) AS[EndDate],tb_EmployeeLeave.TotalDay, tb_EmployeeLeave.Status,CONVERT(NVARCHAR,tb_EmployeeLeave.EntryDate, 100) AS[EntryDate], tb_Employee.EmployeeName,tb_Employee.Email,tb_LeaveType.LeaveType
-FROM tb_EmployeeLeave
-INNER JOIN tb_Employee ON tb_EmployeeLeave.EmployeeId = tb_Employee.Id
-INNER JOIN tb_LeaveType ON tb_EmployeeLeave.LeaveTypeId = tb_LeaveType.Id Where tb_EmployeeLeave.Status = '" + "Submit" + "'";
+            string query = @"SELECT e.Id, CONVERT(NVARCHAR,e.StartDate, 100) AS[StartDate],CONVERT(NVARCHAR,e.EndDate, 100) AS[EndDate],e.TotalDay, e.Status,CONVERT(NVARCHAR,e.EntryDate, 100) AS[EntryDate], a.EmployeeName,a.Email,p.LeaveTypeName
+FROM tb_EmployeeLeave e
+INNER JOIN tb_Employee a ON e.EmployeeId = a.Id
+INNER JOIN tb_LeaveType p ON e.LeaveTypeId = p.Id Where e.Status = '" + "Submit" + "'";
             SqlCommand command = new SqlCommand(query, con);
             con.Open();
             SqlDataReader reader = command.ExecuteReader();
@@ -148,7 +191,7 @@ INNER JOIN tb_LeaveType ON tb_EmployeeLeave.LeaveTypeId = tb_LeaveType.Id Where 
                 employeeLeave.Id = (int)reader["Id"];
                 employeeLeave.EmployeeName = reader["EmployeeName"].ToString();
                 employeeLeave.Email = reader["Email"].ToString();
-                employeeLeave.LeaveTypeName = reader["LeaveType"].ToString();
+                employeeLeave.LeaveTypeName = reader["LeaveTypeName"].ToString();
                 employeeLeave.TotalDay = (int)reader["TotalDay"];
                 employeeLeave.StartDate = reader["StartDate"].ToString();
                 employeeLeave.EndDate = reader["EndDate"].ToString();
@@ -163,10 +206,10 @@ INNER JOIN tb_LeaveType ON tb_EmployeeLeave.LeaveTypeId = tb_LeaveType.Id Where 
         }
         public List<EmployeeLeaveInfo> ShowAllLeaveStatus()
         {
-            string query = @"SELECT tb_EmployeeLeave.Id, CONVERT(NVARCHAR,tb_EmployeeLeave.StartDate, 100) AS[StartDate],CONVERT(NVARCHAR,tb_EmployeeLeave.EndDate, 100) AS[EndDate],tb_EmployeeLeave.TotalDay, tb_EmployeeLeave.Status,CONVERT(NVARCHAR,tb_EmployeeLeave.EntryDate, 100) AS[EntryDate], tb_Employee.EmployeeName,tb_Employee.Email,tb_LeaveType.LeaveType
-FROM tb_EmployeeLeave
-INNER JOIN tb_Employee ON tb_EmployeeLeave.EmployeeId = tb_Employee.Id
-INNER JOIN tb_LeaveType ON tb_EmployeeLeave.LeaveTypeId = tb_LeaveType.Id";
+            string query = @"SELECT e.Id, CONVERT(NVARCHAR,e.StartDate, 100) AS[StartDate],CONVERT(NVARCHAR,e.EndDate, 100) AS[EndDate],e.TotalDay, e.Status,CONVERT(NVARCHAR,e.EntryDate, 100) AS[EntryDate], a.EmployeeName,a.Email,p.LeaveTypeName
+FROM tb_EmployeeLeave e
+INNER JOIN tb_Employee a ON e.EmployeeId = a.Id
+INNER JOIN tb_LeaveType p ON e.LeaveTypeId = p.Id";
             SqlCommand command = new SqlCommand(query, con);
             con.Open();
             SqlDataReader reader = command.ExecuteReader();
@@ -179,7 +222,7 @@ INNER JOIN tb_LeaveType ON tb_EmployeeLeave.LeaveTypeId = tb_LeaveType.Id";
                 employeeLeave.Id = serial;
                 employeeLeave.EmployeeName = reader["EmployeeName"].ToString();
                 employeeLeave.Email = reader["Email"].ToString();
-                employeeLeave.LeaveTypeName = reader["LeaveType"].ToString();
+                employeeLeave.LeaveTypeName = reader["LeaveTypeName"].ToString();
                 employeeLeave.TotalDay = (int)reader["TotalDay"];
                 employeeLeave.StartDate = reader["StartDate"].ToString();
                 employeeLeave.EndDate = reader["EndDate"].ToString();
@@ -257,7 +300,7 @@ where tb_EmployeeLeave.Id = '" + id + "'";
             {
                 isExists = true;
             }
-            
+
             Reader.Close();
             con.Close();
             return isExists;
@@ -286,12 +329,12 @@ where tb_EmployeeLeave.Id = '" + id + "'";
 
         public bool IsLeaveAllocated(AllocationEmployeeLeave leaveTaken)
         {
-            string Query = "SELECT * FROM tb_AllocationLeave WHERE (EmployeeId = @EmployeeId and LeaveTypeId = @LeaveTypeId)";
+            string Query = "SELECT * FROM tb_AllocationLeave WHERE (DesignationId = @DesignationId and LeaveTypeId = @LeaveTypeId)";
             SqlCommand Command = new SqlCommand(Query, con);
             con.Open();
             Command.Parameters.Clear();
-            Command.Parameters.Add("EmployeeId", SqlDbType.Int);
-            Command.Parameters["EmployeeId"].Value = leaveTaken.EmployeeId;
+            Command.Parameters.Add("DesignationId", SqlDbType.Int);
+            Command.Parameters["DesignationId"].Value = leaveTaken.DesignationId;
             Command.Parameters.Add("LeaveTypeId", SqlDbType.Int);
             Command.Parameters["LeaveTypeId"].Value = leaveTaken.LeaveTypeId;
             SqlDataReader Reader = Command.ExecuteReader();
@@ -333,7 +376,10 @@ WHERE EmployeeId ='" + employeeId + "' and LeaveTypeId = '" + 1 + "' and Status 
 
         public List<AllocationEmployeeLeave> AllLeaveInfo(int employeeId)
         {
-            string query = @"SELECT * FROM tb_AllocationLeave Where EmployeeId ='" + employeeId + "' and LeaveTypeId = '" + 1 + "'";
+            string query = @"select e.Id, a.LeaveTypeId, a.NumberOfLeave
+from tb_Employee e
+inner join tb_AllocationLeave a on e.DesignationId = a.DesignationId
+where e.Id = '" + employeeId + "' and a.LeaveTypeId = '" + 1 + "'";
             SqlCommand com = new SqlCommand(query, con);
             con.Open();
             SqlDataReader dr = com.ExecuteReader();
@@ -379,7 +425,10 @@ WHERE EmployeeId ='" + employeeId + "' and LeaveTypeId = '" + 2 + "' and Status 
 
         public List<AllocationEmployeeLeave> TotalCasualLeave(int employeeId)
         {
-            string query = @"SELECT * FROM tb_AllocationLeave Where EmployeeId ='" + employeeId + "' and LeaveTypeId = '" + 2 + "'";
+            string query = @"select e.Id, a.LeaveTypeId, a.NumberOfLeave
+from tb_Employee e
+inner join tb_AllocationLeave a on e.DesignationId = a.DesignationId
+where e.Id = '" + employeeId + "' and a.LeaveTypeId = '" + 2 + "'";
             SqlCommand com = new SqlCommand(query, con);
             con.Open();
             SqlDataReader dr = com.ExecuteReader();
@@ -395,24 +444,20 @@ WHERE EmployeeId ='" + employeeId + "' and LeaveTypeId = '" + 2 + "' and Status 
             return totalLeave.ToList();
         }
 
-        public List<Employee> GetUserRole(int id)
+        public List<LoginInfo> GetUserRole(int id)
         {
 
-            string query1 = @"SELECT [Id]
-      ,[EmployeeName]
-      ,[Email]
-      ,[DesignationId]
-      ,[Password]
-      ,[UserTypeId]
-  FROM [dbo].[tb_Employee]
-  where Id = '" + id + "'";
+            string query1 = @"Select s.Id, s.EmployeeName, s.Email, s.DesignationId, p.UserTypeId, p.Password
+from tb_Employee s
+inner join tb_EmployeePasswordAndUserType p on p.EmployeeId = s.Id
+  where s.Id = '" + id + "'";
             SqlCommand com = new SqlCommand(query1, con);
             con.Open();
             SqlDataReader reader = com.ExecuteReader();
-            List<Employee> userInfo = new List<Employee>();
+            List<LoginInfo> userInfo = new List<LoginInfo>();
             while (reader.Read())
             {
-                Employee logins = new Employee();
+                LoginInfo logins = new LoginInfo();
                 logins.Id = (int)reader["Id"];
                 logins.EmployeeName = reader["EmployeeName"].ToString();
                 logins.Email = reader["Email"].ToString();

@@ -9,8 +9,8 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <div class="login">
-              @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "leaveTakenValidasion", id = "leaveTakenValidasion" }))
-              {
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "leaveTakenValidasion", id = "leaveTakenValidasion" }))
+                {
                     @Html.AntiForgeryToken()
 
                     <div class="form-horizontal">
@@ -42,7 +42,7 @@
                                 <input type="submit" value="Log In" class="btn btn-default" />
                             </div>
                         </div>
-                        <h4 style="color: red">@ViewBag.Msg</h4> 
+                        <h4 style="color: red">@ViewBag.Msg</h4>
                     </div>
                 }
             </div>

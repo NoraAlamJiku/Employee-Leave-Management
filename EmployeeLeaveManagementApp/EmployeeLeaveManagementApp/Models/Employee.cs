@@ -11,7 +11,6 @@ namespace EmployeeLeaveManagementApp.Models
     public class Employee
     {
         public int Id { get; set; }
-
         [Required]
         public string EmployeeName { get; set; }
         [Required]
@@ -21,12 +20,9 @@ namespace EmployeeLeaveManagementApp.Models
         [Required]
         public int DesignationId { get; set; }
         [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-        [DataType(DataType.Password)]
-        [System.ComponentModel.DataAnnotations.Compare("Password")]
-        public string ConfirmPassword { get; set; }
+        public string FatherName { get; set; }
         [Required]
-        public int UserTypeId { get; set; }
+        public string MotherName { get; set; }
+        public string NationalIdNumber { get; set; }
     }
 }
