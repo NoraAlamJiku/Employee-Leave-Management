@@ -19,9 +19,13 @@ namespace EmployeeLeaveManagementApp.Manager
 
         }
 
-        public int SetEmployeeRoleAndPassword(EmployeePasswordAndRole employee)
+        public int SetEmployeePassword(EmployeePassword employee)
         {
-            return adminGateway.SetEmployeeRoleAndPassword(employee);
+            return adminGateway.SetEmployeePassword(employee);
+        }
+        public int SetEmployeeUserType(EmployeeUserType employee)
+        {
+            return adminGateway.SetEmployeeUserType(employee);
         }
 
         public List<Employee> GetEmployeeById(int id)

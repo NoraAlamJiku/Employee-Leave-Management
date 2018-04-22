@@ -33,14 +33,27 @@ namespace EmployeeLeaveManagementApp.Gateway
 
         }
 
-        public int SetEmployeeRoleAndPassword(EmployeePasswordAndRole employee)
+        public int SetEmployeePassword(EmployeePassword employee)
         {
-            string query = @"INSERT INTO [dbo].[tb_EmployeePasswordAndUserType]
+            string query = @"INSERT INTO [dbo].[tb_EmployeePassword]
            ([EmployeeId]
-           ,[UserTypeId]
            ,[Password])
      VALUES
-           ('" + employee.EmployeeId + "','" + employee.UserTypeId + "','" + employee.Password + "')";
+           ('" + employee.EmployeeId + "','" + employee.Password + "')";
+            SqlCommand command = new SqlCommand(query, con);
+            con.Open();
+            int rowAffected = command.ExecuteNonQuery();
+            con.Close();
+            return rowAffected;
+
+        }
+        public int SetEmployeeUserType(EmployeeUserType employee)
+        {
+            string query = @"INSERT INTO [dbo].[tb_EmployeeUserType]
+           ([EmployeeId]
+           ,[UserTypeId])
+     VALUES
+           ('" + employee.EmployeeId + "','" + employee.UserTypeId + "')";
             SqlCommand command = new SqlCommand(query, con);
             con.Open();
             int rowAffected = command.ExecuteNonQuery();
@@ -447,9 +460,10 @@ where e.Id = '" + employeeId + "' and a.LeaveTypeId = '" + 2 + "'";
         public List<LoginInfo> GetUserRole(int id)
         {
 
-            string query1 = @"Select s.Id, s.EmployeeName, s.Email, s.DesignationId, p.UserTypeId, p.Password
-from tb_Employee s
-inner join tb_EmployeePasswordAndUserType p on p.EmployeeId = s.Id
+            string query1 = @"SELECT s.Id, s.EmployeeName, s.Email, p.Password, e.UserTypeId
+  FROM tb_Employee s
+  INNER JOIN tb_EmployeePassword p on p.EmployeeId = s.Id
+  INNER JOIN tb_EmployeeUserType e on e.EmployeeId = s.Id
   where s.Id = '" + id + "'";
             SqlCommand com = new SqlCommand(query1, con);
             con.Open();

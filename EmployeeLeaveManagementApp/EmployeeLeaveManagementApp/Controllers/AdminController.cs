@@ -38,7 +38,7 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1)
+            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
             {
                 ViewBag.designations = adminManager.GetDesignationList();
                 ViewBag.userType = adminManager.GetUserType();
@@ -91,7 +91,7 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1)
+            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
             {
                 ViewBag.userType = adminManager.GetUserType();
                 ViewBag.ListOfEmployees = adminManager.ListOfEmployee();
@@ -104,13 +104,13 @@ namespace EmployeeLeaveManagementApp.Controllers
 
         }
         [HttpPost]
-        public ActionResult SetEmployeePasswordAndRole(EmployeePasswordAndRole employee)
+        public ActionResult SetEmployeePasswordAndRole(EmployeePassword employee)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    int message = adminManager.SetEmployeeRoleAndPassword(employee);
+                    int message = adminManager.SetEmployeePassword(employee);
                     if (message > 0)
                     {
                         ViewBag.ShowMsg = "Employee Password and User Role Saved Successfully!";
@@ -131,6 +131,59 @@ namespace EmployeeLeaveManagementApp.Controllers
             return View();
         }
 
+        //......................
+        public ActionResult SetEmployeeUserType()
+        {
+
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("Login", "Login");
+                ;
+            }
+
+            int employeeId = (int)Session["user"];
+            List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
+            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
+            {
+                ViewBag.userType = adminManager.GetUserType();
+                ViewBag.ListOfEmployees = adminManager.ListOfEmployee();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
+        }
+        [HttpPost]
+        public ActionResult SetEmployeeUserType(EmployeeUserType employee)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    int message = adminManager.SetEmployeeUserType(employee);
+                    if (message > 0)
+                    {
+                        ViewBag.ShowMsg = "Employee Password and User Role Saved Successfully!";
+                    }
+                    else
+                    {
+                        ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
+                    }
+                }
+                catch (Exception)
+                {
+                    ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
+                }
+            }
+
+            ViewBag.userType = adminManager.GetUserType();
+            ViewBag.ListOfEmployees = adminManager.ListOfEmployee();
+            return View();
+        }
+
+        //.................................
         public JsonResult GetEmployeeById(int departmentId)
         {
 
@@ -149,7 +202,7 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1)
+            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
             {
                 ViewBag.leavetype = adminManager.GetLeaveTypes();
                 ViewBag.designations = adminManager.GetDesignationList();
@@ -207,7 +260,7 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1)
+            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
             {
                 List<EmployeeLeaveInfo> GetAllLeaveApplication = adminManager.GetEmployeeLeaveApplication().ToList();
                 return View(GetAllLeaveApplication);
@@ -229,7 +282,7 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1)
+            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
             {
                 ViewBag.EmployeeApplication = adminManager.Approve(id);
                 List<Employee> userEmail = adminManager.GetUserEmail(id);
@@ -253,7 +306,7 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1)
+            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
             {
                 ViewBag.EmployeeApplication = adminManager.Reject(id);
                 //int userId = (int) Session["user"];
@@ -309,7 +362,7 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1)
+            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
             {
                 List<EmployeeLeaveInfo> GetAllLeaveApplication = adminManager.ShowAllLeaveStatus().ToList();
                 return View(GetAllLeaveApplication);
@@ -331,7 +384,7 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             int employeeId1 = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId1);
-            if (userRole[0].UserTypeId == 1)
+            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
             {
                 int employeeId = (int)Session["user"];
                 ViewBag.casualLeaveLeft = adminManager.CasualLeaveLeft(employeeId);

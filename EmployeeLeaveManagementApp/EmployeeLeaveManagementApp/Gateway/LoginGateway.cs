@@ -18,9 +18,10 @@ WebConfigurationManager.ConnectionStrings["LeaveManagementDb"].ConnectionString)
         {
 
             employee.UserTypeId = 2;
-            string query1 = @"SELECT s.Email, s.EmployeeName, s.Id, p.Password, p.UserTypeId
+            string query1 = @"SELECT s.Id, s.EmployeeName, s.Email, p.Password, e.UserTypeId
   FROM tb_Employee s
-  inner join tb_EmployeePasswordAndUserType p on p.EmployeeId= s.Id
+  INNER JOIN tb_EmployeePassword p on p.EmployeeId = s.Id
+  INNER JOIN tb_EmployeeUserType e on e.EmployeeId = s.Id
   where Email = '" + employee.Email + "' and Password = '" + employee.Password + "' and UserTypeId = '" + employee.UserTypeId + "'";
             SqlCommand com = new SqlCommand(query1, con);
             con.Open();
@@ -45,9 +46,10 @@ WebConfigurationManager.ConnectionStrings["LeaveManagementDb"].ConnectionString)
         {
 
             employee.UserTypeId = 1;
-            string query1 = @"SELECT s.Email, s.EmployeeName, s.Id, p.Password, p.UserTypeId
+            string query1 = @"SELECT s.Id, s.EmployeeName, s.Email, p.Password, e.UserTypeId
   FROM tb_Employee s
-  inner join tb_EmployeePasswordAndUserType p on p.EmployeeId= s.Id
+  INNER JOIN tb_EmployeePassword p on p.EmployeeId = s.Id
+  INNER JOIN tb_EmployeeUserType e on e.EmployeeId = s.Id
   where Email = '" + employee.Email + "' and Password = '" + employee.Password + "' and UserTypeId = '" + employee.UserTypeId + "'";
             SqlCommand com = new SqlCommand(query1, con);
             con.Open();
@@ -71,9 +73,10 @@ WebConfigurationManager.ConnectionStrings["LeaveManagementDb"].ConnectionString)
         {
 
             employee.UserTypeId = 3;
-            string query1 = @"SELECT s.Email, s.EmployeeName, s.Id, p.Password, p.UserTypeId
+            string query1 = @"SELECT s.Id, s.EmployeeName, s.Email, p.Password, e.UserTypeId
   FROM tb_Employee s
-  inner join tb_EmployeePasswordAndUserType p on p.EmployeeId= s.Id
+  INNER JOIN tb_EmployeePassword p on p.EmployeeId = s.Id
+  INNER JOIN tb_EmployeeUserType e on e.EmployeeId = s.Id
   where Email = '" + employee.Email + "' and Password = '" + employee.Password + "' and UserTypeId = '" + employee.UserTypeId + "'";
             SqlCommand com = new SqlCommand(query1, con);
             con.Open();

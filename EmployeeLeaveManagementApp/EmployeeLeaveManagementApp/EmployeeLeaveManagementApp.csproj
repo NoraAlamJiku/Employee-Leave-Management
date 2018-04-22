@@ -129,7 +129,8 @@
     <Compile Include="Models\Disignation.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeeLeaveTaken.cs" />
-    <Compile Include="Models\EmployeePasswordAndRole.cs" />
+    <Compile Include="Models\EmployeePassword.cs" />
+    <Compile Include="Models\EmployeeUserType.cs" />
     <Compile Include="Models\LeaveType.cs" />
     <Compile Include="Models\UserType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -194,6 +195,7 @@
     <Content Include="Views\Login\SubAdmin.cshtml" />
     <Content Include="Views\Login\Admin.cshtml" />
     <Content Include="Views\Login\User.cshtml" />
+    <Content Include="Views\Admin\SetEmployeeUserType.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
