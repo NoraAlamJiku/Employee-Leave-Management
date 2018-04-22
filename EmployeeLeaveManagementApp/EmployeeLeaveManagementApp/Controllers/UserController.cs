@@ -18,7 +18,7 @@ namespace EmployeeLeaveManagementApp.Controllers
         {
             if (Session["user"] == null)
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
                 ;
             }
 
@@ -29,13 +29,21 @@ namespace EmployeeLeaveManagementApp.Controllers
         {
             if (Session["user"] == null)
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
                 ;
             }
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 3 || userRole[1].UserTypeId == 3 || userRole[2].UserTypeId == 3)
+            int UserTypeId = 0;
+            foreach (var loginInfo in userRole)
+            {
+                if (loginInfo.UserTypeId == 3)
+                {
+                    UserTypeId = 3;
+                }
+            }
+            if (UserTypeId == 3)
             {
                 ViewBag.designations = adminManager.GetDesignationList();
                 leave = (int)Session["user"];
@@ -44,7 +52,7 @@ namespace EmployeeLeaveManagementApp.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
             }
 
 
@@ -54,13 +62,21 @@ namespace EmployeeLeaveManagementApp.Controllers
         {
             if (Session["user"] == null)
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
                 ;
             }
 
             int employeeId1 = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId1);
-            if (userRole[0].UserTypeId == 3 || userRole[1].UserTypeId == 3 || userRole[2].UserTypeId == 3)
+            int UserTypeId = 0;
+            foreach (var loginInfo in userRole)
+            {
+                if (loginInfo.UserTypeId == 3)
+                {
+                    UserTypeId = 3;
+                }
+            }
+            if (UserTypeId == 3)
             {
                 int employeeId = (int)Session["user"];
                 ViewBag.casualLeaveLeft = adminManager.CasualLeaveLeft(employeeId);
@@ -73,7 +89,7 @@ namespace EmployeeLeaveManagementApp.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
             }
 
         }

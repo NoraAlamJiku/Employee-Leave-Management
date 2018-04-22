@@ -13,62 +13,13 @@ namespace EmployeeLeaveManagementApp.Controllers
     {
         private LoginManager loginManager = new LoginManager();
         // GET: Login
-        public ActionResult Login()
+        public ActionResult SubAdmin()
         {
             if (Session["user"] != null)
             {
                 Session["user"] = null;
                 ;
             }
-
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Login(LoginInfo employee)
-        {
-            try
-            {
-                List<LoginInfo> status = loginManager.SupAdminAdminLogin(employee);
-                if (status.Count != 0)
-                {
-                    if (status.Count() > 0)
-                    {
-                        Session["user"] = status[0].Id;
-                        Session["status"] = true;
-                        if (status[0].UserTypeId == 1)
-                        {
-                            return RedirectToAction("../Admin/Index");
-
-                        }
-                        else if (status[0].UserTypeId == 2)
-                        {
-                            return RedirectToAction("../User/Index");
-
-                        }
-
-
-                    }
-
-                }
-                else
-                {
-                    ViewBag.Msg = "User name or passwoer mismatch!";
-                }
-            }
-            catch (Exception)
-            {
-                ViewBag.Msg = "Please Try Again!";
-            }
-
-
-            return View();
-        }
-
-
-
-        public ActionResult SubAdmin()
-        {
             return View();
         }
 
@@ -107,6 +58,11 @@ namespace EmployeeLeaveManagementApp.Controllers
         }
         public ActionResult Admin()
         {
+            if (Session["user"] != null)
+            {
+                Session["user"] = null;
+                ;
+            }
             return View();
         }
 
@@ -144,6 +100,11 @@ namespace EmployeeLeaveManagementApp.Controllers
         }
         public ActionResult User()
         {
+            if (Session["user"] != null)
+            {
+                Session["user"] = null;
+                ;
+            }
             return View();
         }
 
@@ -183,7 +144,7 @@ namespace EmployeeLeaveManagementApp.Controllers
         public ActionResult LogOut()
         {
             Session["user"] = null;
-            return RedirectToAction("Login");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

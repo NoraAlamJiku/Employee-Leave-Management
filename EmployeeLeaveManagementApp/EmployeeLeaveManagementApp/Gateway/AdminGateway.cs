@@ -357,6 +357,39 @@ where tb_EmployeeLeave.Id = '" + id + "'";
             con.Close();
             return isExist;
         }
+        public bool IsUserRoleSet(EmployeeUserType leaveTaken)
+        {
+            string Query = "SELECT * FROM tb_EmployeeUserType WHERE (EmployeeId = @EmployeeId and UserTypeId = @UserTypeId)";
+            SqlCommand Command = new SqlCommand(Query, con);
+            con.Open();
+            Command.Parameters.Clear();
+            Command.Parameters.Add("EmployeeId", SqlDbType.Int);
+            Command.Parameters["EmployeeId"].Value = leaveTaken.EmployeeId;
+            Command.Parameters.Add("UserTypeId", SqlDbType.Int);
+            Command.Parameters["UserTypeId"].Value = leaveTaken.UserTypeId;
+            SqlDataReader Reader = Command.ExecuteReader();
+            Reader.Read();
+            bool isExist = Reader.HasRows;
+            Reader.Close();
+            con.Close();
+            return isExist;
+        }
+
+        public bool IsPasswordSet(EmployeePassword employee)
+        {
+            string Query = "SELECT * FROM tb_EmployeePassword WHERE (EmployeeId = @EmployeeId)";
+            SqlCommand Command = new SqlCommand(Query, con);
+            con.Open();
+            Command.Parameters.Clear();
+            Command.Parameters.Add("EmployeeId", SqlDbType.Int);
+            Command.Parameters["EmployeeId"].Value = employee.EmployeeId;
+            SqlDataReader Reader = Command.ExecuteReader();
+            Reader.Read();
+            bool isExist = Reader.HasRows;
+            Reader.Close();
+            con.Close();
+            return isExist;
+        }
 
         public List<EmployeeLeaveTaken> GetTotalSickLeaveByEmployeeId(int employeeId)
         {

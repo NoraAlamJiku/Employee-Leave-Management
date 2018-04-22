@@ -11,6 +11,11 @@ namespace EmployeeLeaveManagementApp.Controllers
         // GET: Home
         public ActionResult Index()
         {
+            if (Session["user"] != null)
+            {
+                Session["user"] = null;
+                ;
+            }
             return View();
         }
     }

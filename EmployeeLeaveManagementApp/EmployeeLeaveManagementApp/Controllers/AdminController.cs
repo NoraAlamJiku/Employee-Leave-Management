@@ -21,7 +21,7 @@ namespace EmployeeLeaveManagementApp.Controllers
         {
             if (Session["user"] == null)
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
                 ;
             }
 
@@ -32,13 +32,21 @@ namespace EmployeeLeaveManagementApp.Controllers
         {
             if (Session["user"] == null)
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
                 ;
             }
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
+            int UserTypeId = 0;
+            foreach (var loginInfo in userRole)
+            {
+                if (loginInfo.UserTypeId == 1)
+                {
+                    UserTypeId = 1;
+                }
+            }
+            if (UserTypeId == 1)
             {
                 ViewBag.designations = adminManager.GetDesignationList();
                 ViewBag.userType = adminManager.GetUserType();
@@ -46,7 +54,7 @@ namespace EmployeeLeaveManagementApp.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
             }
 
 
@@ -85,13 +93,21 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             if (Session["user"] == null)
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
                 ;
             }
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
+            int UserTypeId = 0;
+            foreach (var loginInfo in userRole)
+            {
+                if (loginInfo.UserTypeId == 1)
+                {
+                    UserTypeId = 1;
+                }
+            }
+            if (UserTypeId == 1)
             {
                 ViewBag.userType = adminManager.GetUserType();
                 ViewBag.ListOfEmployees = adminManager.ListOfEmployee();
@@ -99,7 +115,7 @@ namespace EmployeeLeaveManagementApp.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
             }
 
         }
@@ -110,15 +126,23 @@ namespace EmployeeLeaveManagementApp.Controllers
             {
                 try
                 {
-                    int message = adminManager.SetEmployeePassword(employee);
-                    if (message > 0)
+                    if (adminManager.IsPasswordSet(employee))
                     {
-                        ViewBag.ShowMsg = "Employee Password and User Role Saved Successfully!";
+                        ViewBag.ShowMsg = "Password set alrady.";
                     }
                     else
                     {
-                        ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
+                        int message = adminManager.SetEmployeePassword(employee);
+                        if (message > 0)
+                        {
+                            ViewBag.ShowMsg = "Password Saved Successfully!";
+                        }
+                        else
+                        {
+                            ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
+                        }
                     }
+
                 }
                 catch (Exception)
                 {
@@ -137,13 +161,21 @@ namespace EmployeeLeaveManagementApp.Controllers
 
             if (Session["user"] == null)
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
                 ;
             }
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
+            int UserTypeId = 0;
+            foreach (var loginInfo in userRole)
+            {
+                if (loginInfo.UserTypeId == 1)
+                {
+                    UserTypeId = 1;
+                }
+            }
+            if (UserTypeId == 1)
             {
                 ViewBag.userType = adminManager.GetUserType();
                 ViewBag.ListOfEmployees = adminManager.ListOfEmployee();
@@ -151,7 +183,7 @@ namespace EmployeeLeaveManagementApp.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
             }
 
         }
@@ -162,15 +194,26 @@ namespace EmployeeLeaveManagementApp.Controllers
             {
                 try
                 {
-                    int message = adminManager.SetEmployeeUserType(employee);
-                    if (message > 0)
+
+                    if (adminManager.IsUserRoleSet(employee))
                     {
-                        ViewBag.ShowMsg = "Employee Password and User Role Saved Successfully!";
+                        ViewBag.ShowMsg = "User Role Set alrady.";
                     }
                     else
                     {
-                        ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
+                        int message = adminManager.SetEmployeeUserType(employee);
+                        if (message > 0)
+                        {
+                            ViewBag.ShowMsg = "User Type Save Successfully!";
+                        }
+                        else
+                        {
+                            ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
+                        }
                     }
+
+                    //...............
+
                 }
                 catch (Exception)
                 {
@@ -196,13 +239,21 @@ namespace EmployeeLeaveManagementApp.Controllers
         {
             if (Session["user"] == null)
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
                 ;
             }
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
+            int UserTypeId = 0;
+            foreach (var loginInfo in userRole)
+            {
+                if (loginInfo.UserTypeId == 1)
+                {
+                    UserTypeId = 1;
+                }
+            }
+            if (UserTypeId == 1)
             {
                 ViewBag.leavetype = adminManager.GetLeaveTypes();
                 ViewBag.designations = adminManager.GetDesignationList();
@@ -210,7 +261,7 @@ namespace EmployeeLeaveManagementApp.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
             }
 
         }
@@ -254,20 +305,28 @@ namespace EmployeeLeaveManagementApp.Controllers
         {
             if (Session["user"] == null)
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
                 ;
             }
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
+            int UserTypeId = 0;
+            foreach (var loginInfo in userRole)
+            {
+                if (loginInfo.UserTypeId == 1)
+                {
+                    UserTypeId = 1;
+                }
+            }
+            if (UserTypeId == 1)
             {
                 List<EmployeeLeaveInfo> GetAllLeaveApplication = adminManager.GetEmployeeLeaveApplication().ToList();
                 return View(GetAllLeaveApplication);
             }
             else
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
             }
 
         }
@@ -276,13 +335,21 @@ namespace EmployeeLeaveManagementApp.Controllers
         {
             if (Session["user"] == null)
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
                 ;
             }
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
+            int UserTypeId = 0;
+            foreach (var loginInfo in userRole)
+            {
+                if (loginInfo.UserTypeId == 1)
+                {
+                    UserTypeId = 1;
+                }
+            }
+            if (UserTypeId == 1)
             {
                 ViewBag.EmployeeApplication = adminManager.Approve(id);
                 List<Employee> userEmail = adminManager.GetUserEmail(id);
@@ -291,7 +358,7 @@ namespace EmployeeLeaveManagementApp.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
             }
 
         }
@@ -300,13 +367,21 @@ namespace EmployeeLeaveManagementApp.Controllers
         {
             if (Session["user"] == null)
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
                 ;
             }
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
+            int UserTypeId = 0;
+            foreach (var loginInfo in userRole)
+            {
+                if (loginInfo.UserTypeId == 1)
+                {
+                    UserTypeId = 1;
+                }
+            }
+            if (UserTypeId == 1)
             {
                 ViewBag.EmployeeApplication = adminManager.Reject(id);
                 //int userId = (int) Session["user"];
@@ -318,7 +393,7 @@ namespace EmployeeLeaveManagementApp.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
             }
 
         }
@@ -356,20 +431,28 @@ namespace EmployeeLeaveManagementApp.Controllers
         {
             if (Session["user"] == null)
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
                 ;
             }
 
             int employeeId = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId);
-            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
+            int UserTypeId = 0;
+            foreach (var loginInfo in userRole)
+            {
+                if (loginInfo.UserTypeId == 1)
+                {
+                    UserTypeId = 1;
+                }
+            }
+            if (UserTypeId == 1)
             {
                 List<EmployeeLeaveInfo> GetAllLeaveApplication = adminManager.ShowAllLeaveStatus().ToList();
                 return View(GetAllLeaveApplication);
             }
             else
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
             }
 
         }
@@ -378,13 +461,21 @@ namespace EmployeeLeaveManagementApp.Controllers
         {
             if (Session["user"] == null)
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
                 ;
             }
 
             int employeeId1 = (int)Session["user"];
             List<LoginInfo> userRole = adminManager.GetUserRole(employeeId1);
-            if (userRole[0].UserTypeId == 1 || userRole[1].UserTypeId == 1 || userRole[2].UserTypeId == 1)
+            int UserTypeId = 0;
+            foreach (var loginInfo in userRole)
+            {
+                if (loginInfo.UserTypeId == 1)
+                {
+                    UserTypeId = 1;
+                }
+            }
+            if (UserTypeId == 1)
             {
                 int employeeId = (int)Session["user"];
                 ViewBag.casualLeaveLeft = adminManager.CasualLeaveLeft(employeeId);
@@ -397,7 +488,7 @@ namespace EmployeeLeaveManagementApp.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Home");
             }
 
         }

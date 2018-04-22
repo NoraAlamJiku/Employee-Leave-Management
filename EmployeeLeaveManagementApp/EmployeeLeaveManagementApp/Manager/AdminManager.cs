@@ -95,7 +95,14 @@ namespace EmployeeLeaveManagementApp.Manager
         {
             return adminGateway.IsLeaveAllocated(leaveTaken);
         }
-
+        public bool IsPasswordSet(EmployeePassword employee)
+        {
+            return adminGateway.IsPasswordSet(employee);
+        }
+        public bool IsUserRoleSet(EmployeeUserType employee)
+        {
+            return adminGateway.IsUserRoleSet(employee);
+        }
         public int SickLeaveLeft(int employeeId)
         {
             var totalSickLeave = adminGateway.AllLeaveInfo(employeeId);

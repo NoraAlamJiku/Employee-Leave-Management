@@ -44,33 +44,6 @@ INNER JOIN tb_LeaveType p ON e.LeaveTypeId = p.Id Where e.EmployeeId = '" + leav
             reader.Close();
             con.Close();
             return employeeLeaveInfo;
-//            string query = @"SELECT [Id]
-//      ,[EmployeeId]
-//      ,[LeaveTypeId]
-//      ,[StartDate]
-//      ,[EndDate]
-//      ,[TotalDay]
-//      ,[Status]
-//  FROM [dbo].[tb_EmployeeLeave] Where EmployeeId = '" + leave + "'";
-//            SqlCommand command = new SqlCommand(query, con);
-//            con.Open();
-//            SqlDataReader reader = command.ExecuteReader();
-//            List<EmployeeLeaveTaken> employeeLeaveTaken = new List<EmployeeLeaveTaken>();
-//            while (reader.Read())
-//            {
-//                EmployeeLeaveTaken employeeLeave = new EmployeeLeaveTaken();
-//                employeeLeave.Id = (int)reader["Id"];
-//                employeeLeave.EmployeeId = (int)reader["EmployeeId"];
-//                employeeLeave.LeaveTypeId = (int)reader["LeaveTypeId"];
-//                employeeLeave.TotalDay = (int)reader["TotalDay"];
-//                employeeLeave.StartDate = (DateTime)reader["StartDate"];
-//                employeeLeave.EndDate = (DateTime)reader["EndDate"];
-//                employeeLeave.Status = reader["Status"].ToString();
-//                employeeLeaveTaken.Add(employeeLeave);
-//            }
-//            reader.Close();
-//            con.Close();
-//            return employeeLeaveTaken.ToList();
         }
 
         public int SendLeaveApplication(EmployeeLeaveTaken leaveTaken)

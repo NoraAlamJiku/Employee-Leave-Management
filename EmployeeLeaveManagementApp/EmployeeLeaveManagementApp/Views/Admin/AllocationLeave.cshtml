@@ -1,4 +1,5 @@
-﻿@model EmployeeLeaveManagementApp.Models.AllocationEmployeeLeave
+﻿@using System.Web.UI.WebControls
+@model EmployeeLeaveManagementApp.Models.AllocationEmployeeLeave
 @{
     ViewBag.Title = "AllocationLeave";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -9,10 +10,8 @@
         <div class="col-md-3"></div>
         <div class="col-md-6">
             <div class="fBody">
-                <h2 style="text-align: center">Allocation employee leave</h2>
-                <h3 style="text-align: center">@ViewBag.ShowMsg</h3>
-
-
+                <h3 style="text-align: center">Allocation employee leave</h3>
+               
                 @using (Html.BeginForm())
                 {
                     @Html.AntiForgeryToken()
@@ -36,7 +35,6 @@
                         </div>
 
                         <div class="form-group">
-                            @*@Html.LabelFor(model => model.LeaveTypeId, htmlAttributes: new { @class = "control-label col-md-2" })*@
                             <div class="col-md-12">
                                 <label id="showLeaveTypeId" class="control-label"></label>
                                 <select name="LeaveTypeId" id="LeaveTypeId" class="form-control">
@@ -51,10 +49,9 @@
                         </div>
 
                         <div class="form-group">
-                            @*@Html.LabelFor(model => model.NumberOfLeave, htmlAttributes: new { @class = "control-label col-md-2" })*@
                             <div class="col-md-12">
                                 <label id="showNumberOfLeave" class="control-label"></label>
-                                @Html.EditorFor(model => model.NumberOfLeave, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.NumberOfLeave, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "Total Day" } })
                                 @Html.ValidationMessageFor(model => model.NumberOfLeave, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -64,6 +61,7 @@
                                 <input type="submit" value="Create" class="btn btn-default" />
                             </div>
                         </div>
+                        <h4 style="text-align: center">@ViewBag.ShowMsg</h4>
                     </div>
                 }
             </div>
