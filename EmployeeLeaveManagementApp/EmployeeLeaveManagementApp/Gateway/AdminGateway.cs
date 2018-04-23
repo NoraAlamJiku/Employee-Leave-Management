@@ -25,11 +25,22 @@ namespace EmployeeLeaveManagementApp.Gateway
            ,[NationalIdNumber])
      VALUES
            ('" + employee.EmployeeName + "','" + employee.Email + "','" + employee.DesignationId + "', '" + employee.FatherName + "','" + employee.MotherName + "', '" + employee.NationalIdNumber + "'  )";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            int rowAffected = command.ExecuteNonQuery();
-            con.Close();
-            return rowAffected;
+
+            try
+            {
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                int rowAffected = command.ExecuteNonQuery();
+                return rowAffected;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
 
         }
 
@@ -40,11 +51,21 @@ namespace EmployeeLeaveManagementApp.Gateway
            ,[Password])
      VALUES
            ('" + employee.EmployeeId + "','" + employee.Password + "')";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            int rowAffected = command.ExecuteNonQuery();
-            con.Close();
-            return rowAffected;
+            try
+            {
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                int rowAffected = command.ExecuteNonQuery();
+                return rowAffected;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
 
         }
         public int SetEmployeeUserType(EmployeeUserType employee)
@@ -54,11 +75,21 @@ namespace EmployeeLeaveManagementApp.Gateway
            ,[UserTypeId])
      VALUES
            ('" + employee.EmployeeId + "','" + employee.UserTypeId + "')";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            int rowAffected = command.ExecuteNonQuery();
-            con.Close();
-            return rowAffected;
+            try
+            {
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                int rowAffected = command.ExecuteNonQuery();
+                return rowAffected;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
 
         }
 
@@ -69,23 +100,34 @@ namespace EmployeeLeaveManagementApp.Gateway
 from tb_Employee s
 inner join tb_Designation p on p.Id = s.DesignationId
 where s.Id = '" + id + "'";
-            SqlCommand com = new SqlCommand(query1, con);
-            con.Open();
-            SqlDataReader reader = com.ExecuteReader();
-            List<Employee> userInfo = new List<Employee>();
-            while (reader.Read())
+            try
             {
-                Employee logins = new Employee();
-                logins.Id = (int)reader["Id"];
-                logins.EmployeeName = reader["EmployeeName"].ToString();
-                logins.Email = reader["Email"].ToString();
-                logins.FatherName = reader["DesignationName"].ToString();
-                userInfo.Add(logins);
+                SqlCommand com = new SqlCommand(query1, con);
+                con.Open();
+                SqlDataReader reader = com.ExecuteReader();
+                List<Employee> userInfo = new List<Employee>();
+                while (reader.Read())
+                {
+                    Employee logins = new Employee();
+                    logins.Id = (int)reader["Id"];
+                    logins.EmployeeName = reader["EmployeeName"].ToString();
+                    logins.Email = reader["Email"].ToString();
+                    logins.FatherName = reader["DesignationName"].ToString();
+                    userInfo.Add(logins);
 
+                }
+                reader.Close();
+                return userInfo;
             }
-            reader.Close();
-            con.Close();
-            return userInfo;
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
 
         public List<Disignation> GetDesignationList()
@@ -93,20 +135,31 @@ where s.Id = '" + id + "'";
             string query = @"SELECT [Id]
       ,[DesignationName]
   FROM [dbo].[tb_Designation]";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            SqlDataReader reader = command.ExecuteReader();
-            List<Disignation> designationList = new List<Disignation>();
-            while (reader.Read())
+            try
             {
-                Disignation disignation = new Disignation();
-                disignation.Id = (int)reader["Id"];
-                disignation.DisignationName = reader["DesignationName"].ToString();
-                designationList.Add(disignation);
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                List<Disignation> designationList = new List<Disignation>();
+                while (reader.Read())
+                {
+                    Disignation disignation = new Disignation();
+                    disignation.Id = (int)reader["Id"];
+                    disignation.DisignationName = reader["DesignationName"].ToString();
+                    designationList.Add(disignation);
+                }
+                reader.Close();
+                return designationList;
             }
-            reader.Close();
-            con.Close();
-            return designationList;
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+            
         }
 
         public List<LeaveType> GetLeaveTypes()
@@ -114,40 +167,62 @@ where s.Id = '" + id + "'";
             string query = @"SELECT [Id]
       ,[LeaveTypeName]
   FROM [dbo].[tb_LeaveType]";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            SqlDataReader reader = command.ExecuteReader();
-            List<LeaveType> leaveTypes = new List<LeaveType>();
-            while (reader.Read())
+            try
             {
-                LeaveType liveType = new LeaveType();
-                liveType.Id = (int)reader["Id"];
-                liveType.LeaveTypeName = reader["LeaveTypeName"].ToString();
-                leaveTypes.Add(liveType);
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                List<LeaveType> leaveTypes = new List<LeaveType>();
+                while (reader.Read())
+                {
+                    LeaveType liveType = new LeaveType();
+                    liveType.Id = (int)reader["Id"];
+                    liveType.LeaveTypeName = reader["LeaveTypeName"].ToString();
+                    leaveTypes.Add(liveType);
+                }
+                reader.Close();
+                return leaveTypes;
             }
-            reader.Close();
-            con.Close();
-            return leaveTypes;
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
         public List<UserType> GetUserType()
         {
             string query = @"SELECT [Id]
       ,[UserTypeName]
   FROM [dbo].[tb_UserType]";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            SqlDataReader reader = command.ExecuteReader();
-            List<UserType> userTypes = new List<UserType>();
-            while (reader.Read())
+            try
             {
-                UserType userType = new UserType();
-                userType.Id = (int)reader["Id"];
-                userType.UserTypeName = reader["UserTypeName"].ToString();
-                userTypes.Add(userType);
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                List<UserType> userTypes = new List<UserType>();
+                while (reader.Read())
+                {
+                    UserType userType = new UserType();
+                    userType.Id = (int)reader["Id"];
+                    userType.UserTypeName = reader["UserTypeName"].ToString();
+                    userTypes.Add(userType);
+                }
+                reader.Close();
+                return userTypes;
             }
-            reader.Close();
-            con.Close();
-            return userTypes;
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
 
         public int AllocationLeave(AllocationEmployeeLeave leave)
@@ -158,11 +233,21 @@ where s.Id = '" + id + "'";
            ,[NumberOfLeave])
      VALUES
            ('" + leave.DesignationId + "', '" + leave.LeaveTypeId + "', '" + leave.NumberOfLeave + "')";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            int rowAffected = command.ExecuteNonQuery();
-            con.Close();
-            return rowAffected;
+            try
+            {
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                int rowAffected = command.ExecuteNonQuery();
+                return rowAffected;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
 
         }
 
@@ -171,20 +256,31 @@ where s.Id = '" + id + "'";
             string query = @"SELECT [Id]
       ,[EmployeeName]
   FROM [dbo].[tb_Employee]";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            SqlDataReader reader = command.ExecuteReader();
-            List<Employee> ListOfEmployee = new List<Employee>();
-            while (reader.Read())
+            try
             {
-                Employee employee = new Employee();
-                employee.Id = (int)reader["Id"];
-                employee.EmployeeName = reader["EmployeeName"].ToString();
-                ListOfEmployee.Add(employee);
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                List<Employee> ListOfEmployee = new List<Employee>();
+                while (reader.Read())
+                {
+                    Employee employee = new Employee();
+                    employee.Id = (int)reader["Id"];
+                    employee.EmployeeName = reader["EmployeeName"].ToString();
+                    ListOfEmployee.Add(employee);
+                }
+                reader.Close();
+                return ListOfEmployee;
             }
-            reader.Close();
-            con.Close();
-            return ListOfEmployee;
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
 
         public List<EmployeeLeaveInfo> GetEmployeeLeaveApplication()
@@ -193,29 +289,40 @@ where s.Id = '" + id + "'";
 FROM tb_EmployeeLeave e
 INNER JOIN tb_Employee a ON e.EmployeeId = a.Id
 INNER JOIN tb_LeaveType p ON e.LeaveTypeId = p.Id Where e.Status = '" + "Submit" + "'";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            SqlDataReader reader = command.ExecuteReader();
-            List<EmployeeLeaveInfo> employeeLeaveInfo = new List<EmployeeLeaveInfo>();
-            while (reader.Read())
+            try
             {
-                EmployeeLeaveInfo employeeLeave = new EmployeeLeaveInfo();
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                List<EmployeeLeaveInfo> employeeLeaveInfo = new List<EmployeeLeaveInfo>();
+                while (reader.Read())
+                {
+                    EmployeeLeaveInfo employeeLeave = new EmployeeLeaveInfo();
 
-                employeeLeave.Id = (int)reader["Id"];
-                employeeLeave.EmployeeName = reader["EmployeeName"].ToString();
-                employeeLeave.Email = reader["Email"].ToString();
-                employeeLeave.LeaveTypeName = reader["LeaveTypeName"].ToString();
-                employeeLeave.TotalDay = (int)reader["TotalDay"];
-                employeeLeave.StartDate = reader["StartDate"].ToString();
-                employeeLeave.EndDate = reader["EndDate"].ToString();
-                employeeLeave.EntryDate = reader["EntryDate"].ToString();
-                employeeLeave.Status = reader["Status"].ToString();
+                    employeeLeave.Id = (int)reader["Id"];
+                    employeeLeave.EmployeeName = reader["EmployeeName"].ToString();
+                    employeeLeave.Email = reader["Email"].ToString();
+                    employeeLeave.LeaveTypeName = reader["LeaveTypeName"].ToString();
+                    employeeLeave.TotalDay = (int)reader["TotalDay"];
+                    employeeLeave.StartDate = reader["StartDate"].ToString();
+                    employeeLeave.EndDate = reader["EndDate"].ToString();
+                    employeeLeave.EntryDate = reader["EntryDate"].ToString();
+                    employeeLeave.Status = reader["Status"].ToString();
 
-                employeeLeaveInfo.Add(employeeLeave);
+                    employeeLeaveInfo.Add(employeeLeave);
+                }
+                reader.Close();
+                return employeeLeaveInfo;
             }
-            reader.Close();
-            con.Close();
-            return employeeLeaveInfo;
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
         public List<EmployeeLeaveInfo> ShowAllLeaveStatus()
         {
@@ -223,42 +330,62 @@ INNER JOIN tb_LeaveType p ON e.LeaveTypeId = p.Id Where e.Status = '" + "Submit"
 FROM tb_EmployeeLeave e
 INNER JOIN tb_Employee a ON e.EmployeeId = a.Id
 INNER JOIN tb_LeaveType p ON e.LeaveTypeId = p.Id";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            SqlDataReader reader = command.ExecuteReader();
-            List<EmployeeLeaveInfo> employeeLeaveInfo = new List<EmployeeLeaveInfo>();
-            int serial = 1;
-            while (reader.Read())
+            try
             {
-                EmployeeLeaveInfo employeeLeave = new EmployeeLeaveInfo();
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                List<EmployeeLeaveInfo> employeeLeaveInfo = new List<EmployeeLeaveInfo>();
+                int serial = 1;
+                while (reader.Read())
+                {
+                    EmployeeLeaveInfo employeeLeave = new EmployeeLeaveInfo();
 
-                employeeLeave.Id = serial;
-                employeeLeave.EmployeeName = reader["EmployeeName"].ToString();
-                employeeLeave.Email = reader["Email"].ToString();
-                employeeLeave.LeaveTypeName = reader["LeaveTypeName"].ToString();
-                employeeLeave.TotalDay = (int)reader["TotalDay"];
-                employeeLeave.StartDate = reader["StartDate"].ToString();
-                employeeLeave.EndDate = reader["EndDate"].ToString();
-                employeeLeave.EntryDate = reader["EntryDate"].ToString();
-                employeeLeave.Status = reader["Status"].ToString();
+                    employeeLeave.Id = serial;
+                    employeeLeave.EmployeeName = reader["EmployeeName"].ToString();
+                    employeeLeave.Email = reader["Email"].ToString();
+                    employeeLeave.LeaveTypeName = reader["LeaveTypeName"].ToString();
+                    employeeLeave.TotalDay = (int)reader["TotalDay"];
+                    employeeLeave.StartDate = reader["StartDate"].ToString();
+                    employeeLeave.EndDate = reader["EndDate"].ToString();
+                    employeeLeave.EntryDate = reader["EntryDate"].ToString();
+                    employeeLeave.Status = reader["Status"].ToString();
 
-                employeeLeaveInfo.Add(employeeLeave);
-                serial++;
+                    employeeLeaveInfo.Add(employeeLeave);
+                    serial++;
+                }
+                reader.Close();
+                return employeeLeaveInfo;
             }
-            reader.Close();
-            con.Close();
-            return employeeLeaveInfo;
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
 
         }
         public int Approve(int? id)
         {
             string query = @"UPDATE [dbo].[tb_EmployeeLeave]
    SET [Status] = '" + "Approve" + "' WHERE [Id] = " + id + "";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            int rowAffected = command.ExecuteNonQuery();
-            con.Close();
-            return rowAffected;
+            try
+            {
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                int rowAffected = command.ExecuteNonQuery();
+                return rowAffected;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
 
         }
 
@@ -266,129 +393,208 @@ INNER JOIN tb_LeaveType p ON e.LeaveTypeId = p.Id";
         {
             string query = @"UPDATE [dbo].[tb_EmployeeLeave]
    SET [Status] = '" + "Reject" + "' WHERE [Id] = " + id + "";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            int rowAffected = command.ExecuteNonQuery();
-            con.Close();
-            return rowAffected;
+            try
+            {
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                int rowAffected = command.ExecuteNonQuery();
+                return rowAffected;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
 
         }
 
-        public List<Employee> GetUserEmail(int? id)
+        public List<SubmitedApplicationInfo> GetUserEmail(int? id)
         {
-            string query = @"select tb_Employee.EmployeeName, tb_Employee.Email, tb_Employee.Id
-From tb_EmployeeLeave
-inner join tb_Employee on tb_EmployeeLeave.EmployeeId=tb_Employee.Id
-where tb_EmployeeLeave.Id = '" + id + "'";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            SqlDataReader reader = command.ExecuteReader();
-            List<Employee> ListOfEmployee = new List<Employee>();
-            while (reader.Read())
+            string query = @"select p.EmployeeName, p.Email, p.Id, CONVERT(NVARCHAR,e.StartDate, 100) AS[StartDate], CONVERT(NVARCHAR,e.EndDate, 100) AS[EndDate], e.TotalDay, CONVERT(NVARCHAR,e.EntryDate, 100) AS[EntryDate]
+From tb_EmployeeLeave e
+inner join tb_Employee p on e.EmployeeId=p.Id
+where e.Id = '" + id + "'";
+            try
             {
-                Employee employee = new Employee();
-                employee.Id = (int)reader["Id"];
-                employee.EmployeeName = reader["EmployeeName"].ToString();
-                employee.Email = reader["Email"].ToString();
-                ListOfEmployee.Add(employee);
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                List<SubmitedApplicationInfo> ListOfEmployee = new List<SubmitedApplicationInfo>();
+                while (reader.Read())
+                {
+                    SubmitedApplicationInfo employee = new SubmitedApplicationInfo();
+                    employee.Id = (int)reader["Id"];
+                    employee.EmployeeName = reader["EmployeeName"].ToString();
+                    employee.Email = reader["Email"].ToString();
+                    employee.StartDate = reader["StartDate"].ToString();
+                    employee.EndDate = reader["EndDate"].ToString();
+                    employee.EntryDate = reader["EntryDate"].ToString();
+                    employee.TotalDay = reader["TotalDay"].ToString();
+                    ListOfEmployee.Add(employee);
+                }
+                reader.Close();
+                return ListOfEmployee;
             }
-            reader.Close();
-            con.Close();
-            return ListOfEmployee;
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
 
         public bool IsEmailExist(string email)
         {
-            bool isExists = false;
-
-            string query = "SELECT Email FROM tb_Employee WHERE Email= @Email ";
-            SqlCommand Command = new SqlCommand(query, con);
-
-            Command.Parameters.Clear();
-
-            Command.Parameters.Add("@Email", SqlDbType.VarChar).Value = email;
-            con.Open();
-            SqlDataReader Reader = Command.ExecuteReader();
-            if (Reader.Read())
+            try
             {
-                isExists = true;
+                bool isExists = false;
+
+                string query = "SELECT Email FROM tb_Employee WHERE Email= @Email ";
+                SqlCommand Command = new SqlCommand(query, con);
+
+                Command.Parameters.Clear();
+
+                Command.Parameters.Add("@Email", SqlDbType.VarChar).Value = email;
+                con.Open();
+                SqlDataReader reader = Command.ExecuteReader();
+                if (reader.Read())
+                {
+                    isExists = true;
+                }
+
+                reader.Close();
+                return isExists;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
             }
 
-            Reader.Close();
-            con.Close();
-            return isExists;
         }
 
         public bool IsLeaveTaken(EmployeeLeaveTaken leaveTaken)
         {
+            try
+            {
+                string Query = "SELECT * FROM tb_EmployeeLeave WHERE (StartDate <= @EndDate AND EndDate >= @StartDate AND EmployeeId = @EmployeeId)";
+                SqlCommand Command = new SqlCommand(Query, con);
+                con.Open();
+                Command.Parameters.Clear();
+                Command.Parameters.Add("StartDate", SqlDbType.Date);
+                Command.Parameters["StartDate"].Value = leaveTaken.StartDate;
+                Command.Parameters.Add("EndDate", SqlDbType.Date);
+                Command.Parameters["EndDate"].Value = leaveTaken.EndDate;
+                Command.Parameters.Add("EmployeeId", SqlDbType.Int);
+                Command.Parameters["EmployeeId"].Value = leaveTaken.EmployeeId;
+                SqlDataReader Reader = Command.ExecuteReader();
+                Reader.Read();
+                bool isExist = Reader.HasRows;
+                Reader.Close();
+                return isExist;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
 
-            string Query = "SELECT * FROM tb_EmployeeLeave WHERE (StartDate <= @EndDate AND EndDate >= @StartDate AND EmployeeId = @EmployeeId)";
-            SqlCommand Command = new SqlCommand(Query, con);
-            con.Open();
-            Command.Parameters.Clear();
-            Command.Parameters.Add("StartDate", SqlDbType.Date);
-            Command.Parameters["StartDate"].Value = leaveTaken.StartDate;
-            Command.Parameters.Add("EndDate", SqlDbType.Date);
-            Command.Parameters["EndDate"].Value = leaveTaken.EndDate;
-            Command.Parameters.Add("EmployeeId", SqlDbType.Int);
-            Command.Parameters["EmployeeId"].Value = leaveTaken.EmployeeId;
-            SqlDataReader Reader = Command.ExecuteReader();
-            Reader.Read();
-            bool isExist = Reader.HasRows;
-            Reader.Close();
-            con.Close();
-            return isExist;
         }
 
         public bool IsLeaveAllocated(AllocationEmployeeLeave leaveTaken)
         {
-            string Query = "SELECT * FROM tb_AllocationLeave WHERE (DesignationId = @DesignationId and LeaveTypeId = @LeaveTypeId)";
-            SqlCommand Command = new SqlCommand(Query, con);
-            con.Open();
-            Command.Parameters.Clear();
-            Command.Parameters.Add("DesignationId", SqlDbType.Int);
-            Command.Parameters["DesignationId"].Value = leaveTaken.DesignationId;
-            Command.Parameters.Add("LeaveTypeId", SqlDbType.Int);
-            Command.Parameters["LeaveTypeId"].Value = leaveTaken.LeaveTypeId;
-            SqlDataReader Reader = Command.ExecuteReader();
-            Reader.Read();
-            bool isExist = Reader.HasRows;
-            Reader.Close();
-            con.Close();
-            return isExist;
+            try
+            {
+                string Query = "SELECT * FROM tb_AllocationLeave WHERE (DesignationId = @DesignationId and LeaveTypeId = @LeaveTypeId)";
+                SqlCommand Command = new SqlCommand(Query, con);
+                con.Open();
+                Command.Parameters.Clear();
+                Command.Parameters.Add("DesignationId", SqlDbType.Int);
+                Command.Parameters["DesignationId"].Value = leaveTaken.DesignationId;
+                Command.Parameters.Add("LeaveTypeId", SqlDbType.Int);
+                Command.Parameters["LeaveTypeId"].Value = leaveTaken.LeaveTypeId;
+                SqlDataReader Reader = Command.ExecuteReader();
+                Reader.Read();
+                bool isExist = Reader.HasRows;
+                Reader.Close();
+                return isExist;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
         public bool IsUserRoleSet(EmployeeUserType leaveTaken)
         {
-            string Query = "SELECT * FROM tb_EmployeeUserType WHERE (EmployeeId = @EmployeeId and UserTypeId = @UserTypeId)";
-            SqlCommand Command = new SqlCommand(Query, con);
-            con.Open();
-            Command.Parameters.Clear();
-            Command.Parameters.Add("EmployeeId", SqlDbType.Int);
-            Command.Parameters["EmployeeId"].Value = leaveTaken.EmployeeId;
-            Command.Parameters.Add("UserTypeId", SqlDbType.Int);
-            Command.Parameters["UserTypeId"].Value = leaveTaken.UserTypeId;
-            SqlDataReader Reader = Command.ExecuteReader();
-            Reader.Read();
-            bool isExist = Reader.HasRows;
-            Reader.Close();
-            con.Close();
-            return isExist;
+            try
+            {
+                string Query = "SELECT * FROM tb_EmployeeUserType WHERE (EmployeeId = @EmployeeId and UserTypeId = @UserTypeId)";
+                SqlCommand Command = new SqlCommand(Query, con);
+                con.Open();
+                Command.Parameters.Clear();
+                Command.Parameters.Add("EmployeeId", SqlDbType.Int);
+                Command.Parameters["EmployeeId"].Value = leaveTaken.EmployeeId;
+                Command.Parameters.Add("UserTypeId", SqlDbType.Int);
+                Command.Parameters["UserTypeId"].Value = leaveTaken.UserTypeId;
+                SqlDataReader Reader = Command.ExecuteReader();
+                Reader.Read();
+                bool isExist = Reader.HasRows;
+                Reader.Close();
+                return isExist;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
 
         public bool IsPasswordSet(EmployeePassword employee)
         {
-            string Query = "SELECT * FROM tb_EmployeePassword WHERE (EmployeeId = @EmployeeId)";
-            SqlCommand Command = new SqlCommand(Query, con);
-            con.Open();
-            Command.Parameters.Clear();
-            Command.Parameters.Add("EmployeeId", SqlDbType.Int);
-            Command.Parameters["EmployeeId"].Value = employee.EmployeeId;
-            SqlDataReader Reader = Command.ExecuteReader();
-            Reader.Read();
-            bool isExist = Reader.HasRows;
-            Reader.Close();
-            con.Close();
-            return isExist;
+            try
+            {
+                string Query = "SELECT * FROM tb_EmployeePassword WHERE (EmployeeId = @EmployeeId)";
+                SqlCommand Command = new SqlCommand(Query, con);
+                con.Open();
+                Command.Parameters.Clear();
+                Command.Parameters.Add("EmployeeId", SqlDbType.Int);
+                Command.Parameters["EmployeeId"].Value = employee.EmployeeId;
+                SqlDataReader Reader = Command.ExecuteReader();
+                Reader.Read();
+                bool isExist = Reader.HasRows;
+                Reader.Close();
+                return isExist;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
 
         public List<EmployeeLeaveTaken> GetTotalSickLeaveByEmployeeId(int employeeId)
@@ -396,28 +602,39 @@ where tb_EmployeeLeave.Id = '" + id + "'";
             string query = @"SELECT SUM(TotalDay) as number
 FROM tb_EmployeeLeave
 WHERE EmployeeId ='" + employeeId + "' and LeaveTypeId = '" + 1 + "' and Status = '" + "Approve" + "'";
-            SqlCommand com = new SqlCommand(query, con);
-            con.Open();
-            SqlDataReader dr = com.ExecuteReader();
-            List<EmployeeLeaveTaken> totalSickLeaves = new List<EmployeeLeaveTaken>();
-            while (dr.Read())
+            try
             {
-                //var totalLeave = dr["number"];
-                EmployeeLeaveTaken leave = new EmployeeLeaveTaken();
-                if (!object.ReferenceEquals(dr["number"], DBNull.Value))
+                SqlCommand com = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader dr = com.ExecuteReader();
+                List<EmployeeLeaveTaken> totalSickLeaves = new List<EmployeeLeaveTaken>();
+                while (dr.Read())
                 {
-                    leave.TotalDay = Convert.ToInt32(dr["number"]);
+                    EmployeeLeaveTaken leave = new EmployeeLeaveTaken();
+                    if (!object.ReferenceEquals(dr["number"], DBNull.Value))
+                    {
+                        leave.TotalDay = Convert.ToInt32(dr["number"]);
 
-                }
-                else
-                {
-                    leave.TotalDay = 0;
-                }
+                    }
+                    else
+                    {
+                        leave.TotalDay = 0;
+                    }
 
-                totalSickLeaves.Add(leave);
+                    totalSickLeaves.Add(leave);
+                }
+                dr.Close();
+                return totalSickLeaves.ToList();
             }
-            con.Close();
-            return totalSickLeaves.ToList();
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
 
         public List<AllocationEmployeeLeave> AllLeaveInfo(int employeeId)
@@ -426,47 +643,70 @@ WHERE EmployeeId ='" + employeeId + "' and LeaveTypeId = '" + 1 + "' and Status 
 from tb_Employee e
 inner join tb_AllocationLeave a on e.DesignationId = a.DesignationId
 where e.Id = '" + employeeId + "' and a.LeaveTypeId = '" + 1 + "'";
-            SqlCommand com = new SqlCommand(query, con);
-            con.Open();
-            SqlDataReader dr = com.ExecuteReader();
-            List<AllocationEmployeeLeave> totalLeave = new List<AllocationEmployeeLeave>();
-            while (dr.Read())
+            try
             {
-                AllocationEmployeeLeave leave = new AllocationEmployeeLeave();
-                leave.Id = (int)dr["Id"];
-                leave.NumberOfLeave = (int)dr["NumberOfLeave"];
-                totalLeave.Add(leave);
+                SqlCommand com = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader dr = com.ExecuteReader();
+                List<AllocationEmployeeLeave> totalLeave = new List<AllocationEmployeeLeave>();
+                while (dr.Read())
+                {
+                    AllocationEmployeeLeave leave = new AllocationEmployeeLeave();
+                    leave.Id = (int)dr["Id"];
+                    leave.NumberOfLeave = (int)dr["NumberOfLeave"];
+                    totalLeave.Add(leave);
+                }
+                dr.Close();
+                return totalLeave.ToList();
             }
-            con.Close();
-            return totalLeave.ToList();
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
         public List<EmployeeLeaveTaken> GetTotalCasualLeaveByEmployeeId(int employeeId)
         {
             string query = @"SELECT SUM(TotalDay) as number
 FROM tb_EmployeeLeave
 WHERE EmployeeId ='" + employeeId + "' and LeaveTypeId = '" + 2 + "' and Status = '" + "Approve" + "'";
-            SqlCommand com = new SqlCommand(query, con);
-            con.Open();
-            SqlDataReader dr = com.ExecuteReader();
-            List<EmployeeLeaveTaken> totalSickLeaves = new List<EmployeeLeaveTaken>();
-            while (dr.Read())
+            try
             {
-                //var totalLeave = dr["number"];
-                EmployeeLeaveTaken leave = new EmployeeLeaveTaken();
-                if (!object.ReferenceEquals(dr["number"], DBNull.Value))
+                SqlCommand com = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader dr = com.ExecuteReader();
+                List<EmployeeLeaveTaken> totalSickLeaves = new List<EmployeeLeaveTaken>();
+                while (dr.Read())
                 {
-                    leave.TotalDay = Convert.ToInt32(dr["number"]);
+                    EmployeeLeaveTaken leave = new EmployeeLeaveTaken();
+                    if (!object.ReferenceEquals(dr["number"], DBNull.Value))
+                    {
+                        leave.TotalDay = Convert.ToInt32(dr["number"]);
 
-                }
-                else
-                {
-                    leave.TotalDay = 0;
-                }
+                    }
+                    else
+                    {
+                        leave.TotalDay = 0;
+                    }
 
-                totalSickLeaves.Add(leave);
+                    totalSickLeaves.Add(leave);
+                }
+                dr.Close();
+                return totalSickLeaves.ToList();
             }
-            con.Close();
-            return totalSickLeaves.ToList();
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
 
         public List<AllocationEmployeeLeave> TotalCasualLeave(int employeeId)
@@ -475,19 +715,31 @@ WHERE EmployeeId ='" + employeeId + "' and LeaveTypeId = '" + 2 + "' and Status 
 from tb_Employee e
 inner join tb_AllocationLeave a on e.DesignationId = a.DesignationId
 where e.Id = '" + employeeId + "' and a.LeaveTypeId = '" + 2 + "'";
-            SqlCommand com = new SqlCommand(query, con);
-            con.Open();
-            SqlDataReader dr = com.ExecuteReader();
-            List<AllocationEmployeeLeave> totalLeave = new List<AllocationEmployeeLeave>();
-            while (dr.Read())
+            try
             {
-                AllocationEmployeeLeave leave = new AllocationEmployeeLeave();
-                leave.Id = (int)dr["Id"];
-                leave.NumberOfLeave = (int)dr["NumberOfLeave"];
-                totalLeave.Add(leave);
+                SqlCommand com = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader dr = com.ExecuteReader();
+                List<AllocationEmployeeLeave> totalLeave = new List<AllocationEmployeeLeave>();
+                while (dr.Read())
+                {
+                    AllocationEmployeeLeave leave = new AllocationEmployeeLeave();
+                    leave.Id = (int)dr["Id"];
+                    leave.NumberOfLeave = (int)dr["NumberOfLeave"];
+                    totalLeave.Add(leave);
+                }
+                dr.Close();
+                return totalLeave.ToList();
             }
-            con.Close();
-            return totalLeave.ToList();
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
 
         public List<LoginInfo> GetUserRole(int id)
@@ -498,23 +750,34 @@ where e.Id = '" + employeeId + "' and a.LeaveTypeId = '" + 2 + "'";
   INNER JOIN tb_EmployeePassword p on p.EmployeeId = s.Id
   INNER JOIN tb_EmployeeUserType e on e.EmployeeId = s.Id
   where s.Id = '" + id + "'";
-            SqlCommand com = new SqlCommand(query1, con);
-            con.Open();
-            SqlDataReader reader = com.ExecuteReader();
-            List<LoginInfo> userInfo = new List<LoginInfo>();
-            while (reader.Read())
+            try
             {
-                LoginInfo logins = new LoginInfo();
-                logins.Id = (int)reader["Id"];
-                logins.EmployeeName = reader["EmployeeName"].ToString();
-                logins.Email = reader["Email"].ToString();
-                logins.UserTypeId = (int)reader["UserTypeId"];
-                userInfo.Add(logins);
+                SqlCommand com = new SqlCommand(query1, con);
+                con.Open();
+                SqlDataReader reader = com.ExecuteReader();
+                List<LoginInfo> userInfo = new List<LoginInfo>();
+                while (reader.Read())
+                {
+                    LoginInfo logins = new LoginInfo();
+                    logins.Id = (int)reader["Id"];
+                    logins.EmployeeName = reader["EmployeeName"].ToString();
+                    logins.Email = reader["Email"].ToString();
+                    logins.UserTypeId = (int)reader["UserTypeId"];
+                    userInfo.Add(logins);
 
+                }
+                reader.Close();
+                return userInfo;
             }
-            reader.Close();
-            con.Close();
-            return userInfo;
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
     }
 }

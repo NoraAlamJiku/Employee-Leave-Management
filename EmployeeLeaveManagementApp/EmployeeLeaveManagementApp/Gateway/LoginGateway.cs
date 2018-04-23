@@ -23,23 +23,34 @@ WebConfigurationManager.ConnectionStrings["LeaveManagementDb"].ConnectionString)
   INNER JOIN tb_EmployeePassword p on p.EmployeeId = s.Id
   INNER JOIN tb_EmployeeUserType e on e.EmployeeId = s.Id
   where Email = '" + employee.Email + "' and Password = '" + employee.Password + "' and UserTypeId = '" + employee.UserTypeId + "'";
-            SqlCommand com = new SqlCommand(query1, con);
-            con.Open();
-            SqlDataReader reader = com.ExecuteReader();
-            List<LoginInfo> userInfo = new List<LoginInfo>();
-            while (reader.Read())
+            try
             {
-                LoginInfo logins = new LoginInfo();
-                logins.Id = (int)reader["Id"];
-                logins.EmployeeName = reader["EmployeeName"].ToString();
-                logins.Email = reader["Email"].ToString();
-                logins.UserTypeId = (int)reader["UserTypeId"];
-                userInfo.Add(logins);
+                SqlCommand com = new SqlCommand(query1, con);
+                con.Open();
+                SqlDataReader reader = com.ExecuteReader();
+                List<LoginInfo> userInfo = new List<LoginInfo>();
+                while (reader.Read())
+                {
+                    LoginInfo logins = new LoginInfo();
+                    logins.Id = (int)reader["Id"];
+                    logins.EmployeeName = reader["EmployeeName"].ToString();
+                    logins.Email = reader["Email"].ToString();
+                    logins.UserTypeId = (int)reader["UserTypeId"];
+                    userInfo.Add(logins);
 
+                }
+                reader.Close();
+                return userInfo;
             }
-            reader.Close();
-            con.Close();
-            return userInfo;
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
 
         public List<LoginInfo> AdminLogin(LoginInfo employee)
@@ -51,23 +62,35 @@ WebConfigurationManager.ConnectionStrings["LeaveManagementDb"].ConnectionString)
   INNER JOIN tb_EmployeePassword p on p.EmployeeId = s.Id
   INNER JOIN tb_EmployeeUserType e on e.EmployeeId = s.Id
   where Email = '" + employee.Email + "' and Password = '" + employee.Password + "' and UserTypeId = '" + employee.UserTypeId + "'";
-            SqlCommand com = new SqlCommand(query1, con);
-            con.Open();
-            SqlDataReader reader = com.ExecuteReader();
-            List<LoginInfo> userInfo = new List<LoginInfo>();
-            while (reader.Read())
+            try
             {
-                LoginInfo logins = new LoginInfo();
-                logins.Id = (int)reader["Id"];
-                logins.EmployeeName = reader["EmployeeName"].ToString();
-                logins.Email = reader["Email"].ToString();
-                logins.UserTypeId = (int)reader["UserTypeId"];
-                userInfo.Add(logins);
+                SqlCommand com = new SqlCommand(query1, con);
+                con.Open();
+                SqlDataReader reader = com.ExecuteReader();
+                List<LoginInfo> userInfo = new List<LoginInfo>();
+                while (reader.Read())
+                {
+                    LoginInfo logins = new LoginInfo();
+                    logins.Id = (int)reader["Id"];
+                    logins.EmployeeName = reader["EmployeeName"].ToString();
+                    logins.Email = reader["Email"].ToString();
+                    logins.UserTypeId = (int)reader["UserTypeId"];
+                    userInfo.Add(logins);
 
+                }
+                reader.Close();
+                con.Close();
+                return userInfo;
             }
-            reader.Close();
-            con.Close();
-            return userInfo;
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
         public List<LoginInfo> UserLogin(LoginInfo employee)
         {
@@ -78,23 +101,35 @@ WebConfigurationManager.ConnectionStrings["LeaveManagementDb"].ConnectionString)
   INNER JOIN tb_EmployeePassword p on p.EmployeeId = s.Id
   INNER JOIN tb_EmployeeUserType e on e.EmployeeId = s.Id
   where Email = '" + employee.Email + "' and Password = '" + employee.Password + "' and UserTypeId = '" + employee.UserTypeId + "'";
-            SqlCommand com = new SqlCommand(query1, con);
-            con.Open();
-            SqlDataReader reader = com.ExecuteReader();
-            List<LoginInfo> userInfo = new List<LoginInfo>();
-            while (reader.Read())
+            try
             {
-                LoginInfo logins = new LoginInfo();
-                logins.Id = (int)reader["Id"];
-                logins.EmployeeName = reader["EmployeeName"].ToString();
-                logins.Email = reader["Email"].ToString();
-                logins.UserTypeId = (int)reader["UserTypeId"];
-                userInfo.Add(logins);
+                SqlCommand com = new SqlCommand(query1, con);
+                con.Open();
+                SqlDataReader reader = com.ExecuteReader();
+                List<LoginInfo> userInfo = new List<LoginInfo>();
+                while (reader.Read())
+                {
+                    LoginInfo logins = new LoginInfo();
+                    logins.Id = (int)reader["Id"];
+                    logins.EmployeeName = reader["EmployeeName"].ToString();
+                    logins.Email = reader["Email"].ToString();
+                    logins.UserTypeId = (int)reader["UserTypeId"];
+                    userInfo.Add(logins);
 
+                }
+                reader.Close();
+                con.Close();
+                return userInfo;
             }
-            reader.Close();
-            con.Close();
-            return userInfo;
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
     }
 }

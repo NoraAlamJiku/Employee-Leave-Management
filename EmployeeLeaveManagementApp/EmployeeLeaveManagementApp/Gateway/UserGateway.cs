@@ -19,31 +19,42 @@ namespace EmployeeLeaveManagementApp.Gateway
 FROM tb_EmployeeLeave e
 INNER JOIN tb_Employee a ON e.EmployeeId = a.Id
 INNER JOIN tb_LeaveType p ON e.LeaveTypeId = p.Id Where e.EmployeeId = '" + leave + "'";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            SqlDataReader reader = command.ExecuteReader();
-            List<EmployeeLeaveInfo> employeeLeaveInfo = new List<EmployeeLeaveInfo>();
-            int serial = 1;
-            while (reader.Read())
+            try
             {
-                EmployeeLeaveInfo employeeLeave = new EmployeeLeaveInfo();
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                List<EmployeeLeaveInfo> employeeLeaveInfo = new List<EmployeeLeaveInfo>();
+                int serial = 1;
+                while (reader.Read())
+                {
+                    EmployeeLeaveInfo employeeLeave = new EmployeeLeaveInfo();
 
-                employeeLeave.Id = serial;
-                employeeLeave.EmployeeName = reader["EmployeeName"].ToString();
-                employeeLeave.Email = reader["Email"].ToString();
-                employeeLeave.LeaveTypeName = reader["LeaveTypeName"].ToString();
-                employeeLeave.TotalDay = (int)reader["TotalDay"];
-                employeeLeave.StartDate = reader["StartDate"].ToString();
-                employeeLeave.EndDate = reader["EndDate"].ToString();
-                employeeLeave.EntryDate = reader["EntryDate"].ToString();
-                employeeLeave.Status = reader["Status"].ToString();
+                    employeeLeave.Id = serial;
+                    employeeLeave.EmployeeName = reader["EmployeeName"].ToString();
+                    employeeLeave.Email = reader["Email"].ToString();
+                    employeeLeave.LeaveTypeName = reader["LeaveTypeName"].ToString();
+                    employeeLeave.TotalDay = (int)reader["TotalDay"];
+                    employeeLeave.StartDate = reader["StartDate"].ToString();
+                    employeeLeave.EndDate = reader["EndDate"].ToString();
+                    employeeLeave.EntryDate = reader["EntryDate"].ToString();
+                    employeeLeave.Status = reader["Status"].ToString();
 
-                employeeLeaveInfo.Add(employeeLeave);
-                serial++;
+                    employeeLeaveInfo.Add(employeeLeave);
+                    serial++;
+                }
+                reader.Close();
+                return employeeLeaveInfo;
             }
-            reader.Close();
-            con.Close();
-            return employeeLeaveInfo;
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
         }
 
         public int SendLeaveApplication(EmployeeLeaveTaken leaveTaken)
@@ -60,11 +71,22 @@ INNER JOIN tb_LeaveType p ON e.LeaveTypeId = p.Id Where e.EmployeeId = '" + leav
            ('" + leaveTaken.EmployeeId + "', '" + leaveTaken.LeaveTypeId + "', '" + leaveTaken.StartDate +
                            "', '" + leaveTaken.EndDate + "', '" + leaveTaken.TotalDay + "','" +
                            leaveTaken.Status + "', '" + leaveTaken.EntryDate + "')";
-            SqlCommand command = new SqlCommand(query, con);
-            con.Open();
-            int rowAffected = command.ExecuteNonQuery();
-            con.Close();
-            return rowAffected;
+            try
+            {
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                int rowAffected = command.ExecuteNonQuery();
+                return rowAffected;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
+
 
         }
     }

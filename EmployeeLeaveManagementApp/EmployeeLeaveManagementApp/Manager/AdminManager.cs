@@ -78,7 +78,7 @@ namespace EmployeeLeaveManagementApp.Manager
             return rowAffected;
 
         }
-        public List<Employee> GetUserEmail(int? id)
+        public List<SubmitedApplicationInfo> GetUserEmail(int? id)
         {
             return adminGateway.GetUserEmail(id);
         }

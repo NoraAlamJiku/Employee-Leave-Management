@@ -77,16 +77,15 @@ namespace EmployeeLeaveManagementApp.Controllers
                         ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
                     }
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
-                    ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
+                    ViewBag.ShowMsg = exception.Message;
                 }
             }
             ViewBag.designations = adminManager.GetDesignationList();
             ViewBag.userType = adminManager.GetUserType();
             return View();
         }
-        //..................
 
         public ActionResult SetEmployeePasswordAndRole()
         {
@@ -144,9 +143,9 @@ namespace EmployeeLeaveManagementApp.Controllers
                     }
 
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
-                    ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
+                    ViewBag.ShowMsg = exception.Message;
                 }
             }
 
@@ -155,7 +154,6 @@ namespace EmployeeLeaveManagementApp.Controllers
             return View();
         }
 
-        //......................
         public ActionResult SetEmployeeUserType()
         {
 
@@ -212,12 +210,10 @@ namespace EmployeeLeaveManagementApp.Controllers
                         }
                     }
 
-                    //...............
-
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
-                    ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
+                    ViewBag.ShowMsg = exception.Message;
                 }
             }
 
@@ -226,7 +222,6 @@ namespace EmployeeLeaveManagementApp.Controllers
             return View();
         }
 
-        //.................................
         public JsonResult GetEmployeeById(int departmentId)
         {
 
@@ -234,7 +229,6 @@ namespace EmployeeLeaveManagementApp.Controllers
             return Json(status.ToList(), JsonRequestBehavior.AllowGet);
         }
 
-        //...................
         public ActionResult AllocationLeave()
         {
             if (Session["user"] == null)
@@ -289,9 +283,9 @@ namespace EmployeeLeaveManagementApp.Controllers
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
-                    ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
+                    ViewBag.ShowMsg = exception.Message;
                 }
             }
 
@@ -352,8 +346,8 @@ namespace EmployeeLeaveManagementApp.Controllers
             if (UserTypeId == 1)
             {
                 ViewBag.EmployeeApplication = adminManager.Approve(id);
-                List<Employee> userEmail = adminManager.GetUserEmail(id);
-                bool result = SendEmail(userEmail[0].Email, "Check Sending Email", "<p>Hello <br/>Your Leave Application are Approved by HR Admin<br/>Thank You<br/>Md Nora Alam</p>");
+                List<SubmitedApplicationInfo> userEmail = adminManager.GetUserEmail(id);
+                bool result = SendEmail(userEmail[0].Email, "About your leave application", "<p>Hello '" + userEmail[0].EmployeeName + "' <br/>Your Leave Application start date '" + userEmail[0].StartDate + "' and end date '" + userEmail[0].EndDate + "', entry date " + userEmail[0].EntryDate + " are Approved by HR Admin<br/>Thank You<br/>PBL-001</p>");
                 return RedirectToAction("AproveOrReject");
             }
             else
@@ -384,10 +378,8 @@ namespace EmployeeLeaveManagementApp.Controllers
             if (UserTypeId == 1)
             {
                 ViewBag.EmployeeApplication = adminManager.Reject(id);
-                //int userId = (int) Session["user"];
-                List<Employee> userEmail = adminManager.GetUserEmail(id);
-
-                bool result = SendEmail(userEmail[0].Email, "Check Sending Email", "<p>Hello <br/>Your Leave Application are Rejected by HR Admin<br/>Thank You <br/>Md Nora Alam</p>");
+                List<SubmitedApplicationInfo> userEmail = adminManager.GetUserEmail(id);
+                bool result = SendEmail(userEmail[0].Email, "About your leave application", "<p>Hello '" + userEmail[0].EmployeeName + "' <br/>Your Leave Application start date '" + userEmail[0].StartDate + "' and end date '" + userEmail[0].EndDate + "', entry date " + userEmail[0].EntryDate + " are Rejected by HR Admin<br/>Thank You<br/>PBL-001</p>");
 
                 return RedirectToAction("AproveOrReject");
             }
@@ -521,9 +513,9 @@ namespace EmployeeLeaveManagementApp.Controllers
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
-                    ViewBag.ShowMsg = "Opps! Application Not Saved! Try Again Please";
+                    ViewBag.ShowMsg = exception.Message;
                 }
             }
 

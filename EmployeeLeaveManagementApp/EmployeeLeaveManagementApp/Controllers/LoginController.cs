@@ -50,9 +50,9 @@ namespace EmployeeLeaveManagementApp.Controllers
                     ViewBag.Msg = "User name or passwoer mismatch!";
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                ViewBag.Msg = "Please Try Again!";
+                ViewBag.Msg = exception.Message;
             }
             return View(employee);
         }
@@ -92,9 +92,9 @@ namespace EmployeeLeaveManagementApp.Controllers
                     ViewBag.Msg = "User name or passwoer mismatch!";
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                ViewBag.Msg = "Please Try Again!";
+                ViewBag.Msg = exception.Message;
             }
             return View();
         }
@@ -134,9 +134,9 @@ namespace EmployeeLeaveManagementApp.Controllers
                     ViewBag.Msg = "User name or passwoer mismatch!";
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                ViewBag.Msg = "Please Try Again!";
+                ViewBag.Msg = exception.Message;
             }
             return View(employee);
         }

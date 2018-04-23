@@ -67,9 +67,9 @@ namespace EmployeeLeaveManagementApp.Controllers
                         ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
                     }
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
-                    ViewBag.ShowMsg = "Opps! Data Not Saved! Try Again Please";
+                    ViewBag.ShowMsg = exception.Message;
                 }
             }
             ViewBag.designations = adminManager.GetDesignationList();
@@ -143,9 +143,9 @@ namespace EmployeeLeaveManagementApp.Controllers
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
-                    ViewBag.ShowMsg = "Opps! Application Not Saved! Try Again Please";
+                    ViewBag.ShowMsg = exception.Message;
                 }
             }
 
