@@ -3,80 +3,81 @@
     ViewBag.Title = "LeaveTaken";
     Layout = "~/Views/Shared/_LayoutSubAdmin.cshtml";
 }
+<div id="page-wrapper">
+    <div class="control-label">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="fBody">
+                    <h3 style="text-align: center">Application for leave</h3>
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "leaveTakenValidasion", id = "leaveTakenValidasion" }))
+                    {
+                        @Html.AntiForgeryToken()
 
-<div class="control-label">
-    <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-            <div class="fBody">
-                <h3 style="text-align: center">Application for leave</h3>
-                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "leaveTakenValidasion", id = "leaveTakenValidasion" }))
-                {
-                    @Html.AntiForgeryToken()
-                  
-                    <hr />
-                    <div class="form-horizontal">
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <hr />
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label id="showLeaveTypeId" class="control-label"></label>
-                                <select name="LeaveTypeId" id="LeaveTypeId" class="form-control">
-                                    <option value="">--Select Leave Type--</option>
-                                    @foreach (var employee in ViewBag.ListOfLeaveType)
-                                    {
-                                        <option value="@employee.Id">@employee.LeaveTypeName</option>
-                                    }
-                                </select>
-                                @Html.ValidationMessageFor(model => model.LeaveTypeId, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label id="showLeaveTypeId" class="control-label"></label>
+                                    <select name="LeaveTypeId" id="LeaveTypeId" class="form-control">
+                                        <option value="">--Select Leave Type--</option>
+                                        @foreach (var employee in ViewBag.ListOfLeaveType)
+                                        {
+                                            <option value="@employee.Id">@employee.LeaveTypeName</option>
+                                        }
+                                    </select>
+                                    @Html.ValidationMessageFor(model => model.LeaveTypeId, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label id="showReason" class="control-label"></label>
-                                <input type="text" id="Reason" name="Reason" class="form-control" placeholder="Leave Purpose/Reason" />
-                                @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label id="showReason" class="control-label"></label>
+                                    <input type="text" id="Reason" name="Reason" class="form-control" placeholder="Leave Purpose/Reason" />
+                                    @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label id="showStartDate" class="control-label"></label>
-                                <input type="date" id="StartDate" name="StartDate" class="form-control" placeholder="Please Select Start Date" />
-                                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label id="showStartDate" class="control-label"></label>
+                                    <input type="date" id="StartDate" name="StartDate" class="form-control" placeholder="Please Select Start Date" />
+                                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label id="showEndDate" class="control-label"></label>
-                                <input type="date" id="EndDate" name="EndDate" class="form-control" placeholder="Please Select End Date" />
-                                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label id="showEndDate" class="control-label"></label>
+                                    <input type="date" id="EndDate" name="EndDate" class="form-control" placeholder="Please Select End Date" />
+                                    @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label id="showTotalDay" class="control-label"></label>
-                                <input type="text" id="TotalDay" name="TotalDay" class="form-control" placeholder="Total Day" />
-                                @Html.ValidationMessageFor(model => model.TotalDay, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label id="showTotalDay" class="control-label"></label>
+                                    <input type="text" id="TotalDay" name="TotalDay" class="form-control" placeholder="Total Day" />
+                                    @Html.ValidationMessageFor(model => model.TotalDay, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input type="submit" value="Submit" class="btn btn-default" />
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-success btn-block" name="btn">Submit</button>
+                                </div>
                             </div>
+                            <h4 style="text-align: center"> @ViewBag.ShowMsg </h4>
                         </div>
-                        <h4 style="text-align: center"> @ViewBag.ShowMsg </h4>
-                    </div>
-                }
+                    }
+                </div>
             </div>
-        </div>
-        <div class="col-md-3">
-            <h4> Sick Leave :   @ViewBag.sickLeaveLeft / @ViewBag.totalSickLeave </h4>
-            <h4> Casual Leave :   @ViewBag.casualLeaveLeft / @ViewBag.totalCasualkLeave </h4>
+            <div class="col-md-3">
+                <h4> Sick Leave :   @ViewBag.sickLeaveLeft / @ViewBag.totalSickLeave </h4>
+                <h4> Casual Leave :   @ViewBag.casualLeaveLeft / @ViewBag.totalCasualkLeave </h4>
+            </div>
         </div>
     </div>
 </div>

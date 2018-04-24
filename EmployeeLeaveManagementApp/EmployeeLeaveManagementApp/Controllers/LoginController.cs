@@ -34,6 +34,9 @@ namespace EmployeeLeaveManagementApp.Controllers
                 {
                     if (status.Count() > 0)
                     {
+                        var name = status[0].EmployeeName;
+                        Session["Admin"] = "Sub Admin";
+                        Session["User1"] = name;
                         Session["user"] = status[0].Id;
                         Session["status"] = true;
                         if (status[0].UserTypeId == 2)
@@ -76,6 +79,9 @@ namespace EmployeeLeaveManagementApp.Controllers
                 {
                     if (status.Count() > 0)
                     {
+                        var name = status[0].EmployeeName;
+                        Session["Admin"] = "Admin";
+                        Session["User1"] = name;
                         Session["user"] = status[0].Id;
                         Session["status"] = true;
                         if (status[0].UserTypeId == 1)
@@ -118,6 +124,9 @@ namespace EmployeeLeaveManagementApp.Controllers
                 {
                     if (status.Count() > 0)
                     {
+                        var name = status[0].EmployeeName;
+                        Session["Admin"] = "User";
+                        Session["User1"] = name;
                         Session["user"] = status[0].Id;
                         Session["status"] = true;
                         if (status[0].UserTypeId == 3)
