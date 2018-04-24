@@ -4,47 +4,35 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <div class="login">
-                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "leaveTakenValidasion", id = "leaveTakenValidasion" }))
-                {
-                    @Html.AntiForgeryToken()
+<div id="page-wrapper">
+    <div class="main-page login-page ">
+        <h2 class="title1">Admin Login</h2>
 
-                    <div class="form-horizontal">
-                        <h4 style="text-align: center">Admin Login page</h4>
-                        <hr />
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label id="ShowEmail"></label>
-                                <input type="text" id="Email" name="Email" placeholder="Please enter your email" class="form-control" />
-                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+        <div class="widget-shadow">
+            <div class="login-body">
 
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label id="ShowPassword"></label>
-                                <input type="password" id="Password" name="Password" placeholder="Please enter your password" class="form-control" />
-                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                <form action="#" method="post">
+                    <input type="email" class="user" id="Email" name="Email" placeholder="Enter Your Email" required="">
+                    <input type="password" name="Password" id="Password" class="lock" placeholder="Password" required="">
+                    @*<div class="forgot-grid">
+                            <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i></i>Remember me</label>
+                            <div class="forgot">
+                                <a href="#">forgot password?</a>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input type="submit" value="Log In" class="btn btn-default" />
-                            </div>
-                        </div>
-                        <h4 style="color: red">@ViewBag.Msg</h4>
+                            <div class="clearfix"> </div>
+                        </div>*@
+                    <input type="submit" name="Sign In" value="Sign In">
+                    <br />
+                    <h4 style="color: red">@ViewBag.Msg</h4>
+                    <div class="registration">
+                        @*Don't have an account ?
+                            <a class="" href="signup.html">
+                                Create an account
+                            </a>*@
                     </div>
-                }
+                </form>
             </div>
-
         </div>
-        <div class="col-md-2"></div>
     </div>
 </div>
 
