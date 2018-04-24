@@ -136,6 +136,11 @@ namespace EmployeeLeaveManagementApp.Controllers
                         if (message > 0)
                         {
                             ViewBag.ShowMsg = "Leave Application Submit Successfully!";
+                            List<SubmitedApplicationInfo> userEmail = adminManager.GetUserEmailAndName(leaveTaken.EmployeeId);
+                            bool result = adminManager.SendEmail(userEmail[0].Email, "About your leave application",
+                                "<p>Hello '" + userEmail[0].EmployeeName + "' <br/>Your Leave Application start date '" +
+                                leaveTaken.StartDate.ToString("dd/MM/yyyy") + "' and end date '" + leaveTaken.EndDate.ToString("dd/MM/yyyy") + "', total day " +
+                                leaveTaken.TotalDay + " are received by HR Admin<br/>Thank You<br/>PBL-001</p>");
                         }
                         else
                         {

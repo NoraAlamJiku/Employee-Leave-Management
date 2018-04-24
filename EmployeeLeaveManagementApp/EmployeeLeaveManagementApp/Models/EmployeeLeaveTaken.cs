@@ -16,8 +16,10 @@ namespace EmployeeLeaveManagementApp.Models
         [Required]
         public string Reason { get; set; }
         [Required]
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
         [Required]
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
        
         public DateTime EntryDate { get; set; }

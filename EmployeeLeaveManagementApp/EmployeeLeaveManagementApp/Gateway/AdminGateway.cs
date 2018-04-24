@@ -448,7 +448,36 @@ where e.Id = '" + id + "'";
             }
 
         }
+        public List<SubmitedApplicationInfo> GetUserEmailAndName(int? id)
+        {
+            string query = @"select EmployeeName, Email from tb_Employee 
+where Id = '" + id + "'";
+            try
+            {
+                SqlCommand command = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                List<SubmitedApplicationInfo> ListOfEmployee = new List<SubmitedApplicationInfo>();
+                while (reader.Read())
+                {
+                    SubmitedApplicationInfo employee = new SubmitedApplicationInfo();
+                    employee.EmployeeName = reader["EmployeeName"].ToString();
+                    employee.Email = reader["Email"].ToString();
+                    ListOfEmployee.Add(employee);
+                }
+                reader.Close();
+                return ListOfEmployee;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to connect Server", exception);
+            }
+            finally
+            {
+                con.Close();
+            }
 
+        }
         public bool IsEmailExist(string email)
         {
             try

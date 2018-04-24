@@ -347,7 +347,10 @@ namespace EmployeeLeaveManagementApp.Controllers
             {
                 ViewBag.EmployeeApplication = adminManager.Approve(id);
                 List<SubmitedApplicationInfo> userEmail = adminManager.GetUserEmail(id);
-                bool result = SendEmail(userEmail[0].Email, "About your leave application", "<p>Hello '" + userEmail[0].EmployeeName + "' <br/>Your Leave Application start date '" + userEmail[0].StartDate + "' and end date '" + userEmail[0].EndDate + "', entry date " + userEmail[0].EntryDate + " are Approved by HR Admin<br/>Thank You<br/>PBL-001</p>");
+                bool result = adminManager.SendEmail(userEmail[0].Email, "About your leave application",
+                    "<p>Hello '" + userEmail[0].EmployeeName + "' <br/>Your Leave Application start date '" +
+                    userEmail[0].StartDate + "' and end date '" + userEmail[0].EndDate + "', entry date " +
+                    userEmail[0].EntryDate + " are Approved by HR Admin<br/>Thank You<br/>PBL-001</p>");
                 return RedirectToAction("AproveOrReject");
             }
             else
@@ -379,7 +382,10 @@ namespace EmployeeLeaveManagementApp.Controllers
             {
                 ViewBag.EmployeeApplication = adminManager.Reject(id);
                 List<SubmitedApplicationInfo> userEmail = adminManager.GetUserEmail(id);
-                bool result = SendEmail(userEmail[0].Email, "About your leave application", "<p>Hello '" + userEmail[0].EmployeeName + "' <br/>Your Leave Application start date '" + userEmail[0].StartDate + "' and end date '" + userEmail[0].EndDate + "', entry date " + userEmail[0].EntryDate + " are Rejected by HR Admin<br/>Thank You<br/>PBL-001</p>");
+                bool result = adminManager.SendEmail(userEmail[0].Email, "About your leave application",
+                    "<p>Hello '" + userEmail[0].EmployeeName + "' <br/>Your Leave Application start date '" +
+                    userEmail[0].StartDate + "' and end date '" + userEmail[0].EndDate + "', entry date " +
+                    userEmail[0].EntryDate + " are Rejected by HR Admin<br/>Thank You<br/>PBL-001</p>");
 
                 return RedirectToAction("AproveOrReject");
             }
@@ -388,34 +394,6 @@ namespace EmployeeLeaveManagementApp.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-        }
-        
-
-        public bool SendEmail(string toEmail, string subject, string emailBody)
-        {
-
-            try
-            {
-                string senderEmail = System.Configuration.ConfigurationManager.AppSettings["SenderEmail"].ToString();
-                string senderPassword = System.Configuration.ConfigurationManager.AppSettings["SenderPassword"].ToString();
-
-                SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
-                client.EnableSsl = true;
-                client.Timeout = 100000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential(senderEmail, senderPassword);
-                MailMessage mailMessage = new MailMessage(senderEmail, toEmail, subject, emailBody);
-
-                mailMessage.IsBodyHtml = true;
-                mailMessage.BodyEncoding = UTF8Encoding.UTF8;
-                client.Send(mailMessage);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
         }
 
 
@@ -506,6 +484,11 @@ namespace EmployeeLeaveManagementApp.Controllers
                         if (message > 0)
                         {
                             ViewBag.ShowMsg = "Leave Application Submit Successfully!";
+                            List<SubmitedApplicationInfo> userEmail = adminManager.GetUserEmailAndName(leaveTaken.EmployeeId);
+                            bool result = adminManager.SendEmail(userEmail[0].Email, "About your leave application",
+                                "<p>Hello '" + userEmail[0].EmployeeName + "' <br/>Your Leave Application start date '" +
+                                leaveTaken.StartDate.ToString("dd/MM/yyyy") + "' and end date '" + leaveTaken.EndDate.ToString("dd/MM/yyyy") + "', total day " +
+                                leaveTaken.TotalDay + " are received by HR Admin<br/>Thank You<br/>PBL-001</p>");
                         }
                         else
                         {
